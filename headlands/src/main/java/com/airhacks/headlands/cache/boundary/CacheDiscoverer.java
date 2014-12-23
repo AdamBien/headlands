@@ -114,12 +114,27 @@ public class CacheDiscoverer {
         return counter;
     }
 
-    public String getValue(String cacheName, String key) {
-        Cache<String, String> cache = getCache(key);
+    public String get(String cacheName, String key) {
+        Cache<String, String> cache = getCache(cacheName);
         if (cache == null) {
             return null;
         }
         return cache.get(key);
     }
 
+    public void put(String cacheName, String key, String value) {
+        Cache<String, String> cache = getCache(cacheName);
+        if (cache == null) {
+            return;
+        }
+        cache.put(key, value);
+    }
+
+    public void remove(String cacheName, String key) {
+        Cache<String, String> cache = getCache(cacheName);
+        if (cache == null) {
+            return;
+        }
+        cache.remove(key);
+    }
 }
