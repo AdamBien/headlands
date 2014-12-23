@@ -114,4 +114,12 @@ public class CacheDiscoverer {
         return counter;
     }
 
+    public String getValue(String cacheName, String key) {
+        Cache<String, String> cache = getCache(key);
+        if (cache == null) {
+            return null;
+        }
+        return cache.get(key);
+    }
+
 }

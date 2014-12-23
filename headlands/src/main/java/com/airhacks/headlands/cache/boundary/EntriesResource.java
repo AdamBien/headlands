@@ -3,6 +3,7 @@ package com.airhacks.headlands.cache.boundary;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
@@ -30,6 +31,12 @@ public class EntriesResource {
             discoverer.dumpInto(cacheName, maxEntries, o);
         };
         return Response.ok(so).build();
+    }
+
+    @GET
+    @Path("{key}")
+    public String getValue(@PathParam("key") String key) {
+        return this.discoverer.getValue(cacheName, key);
     }
 
 }
