@@ -9,6 +9,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,13 @@ public class CachesResourceIT {
         JsonObject configuration = Json.createObjectBuilder().build();
         response = this.tut.path(cacheName).request().put(Entity.json(configuration));
         assertThat(response.getStatus(), is(201));
+
+        response = this.tut.path(cacheName).request(MediaType.APPLICATION_JSON).options();
+        assertThat(response.getStatus(), is(200));
+
+        JsonObject info = response.readEntity(JsonObject.class);
+        System.out.println("info = " + info);
+        assertNotNull(info);
 
         response = this.tut.path(cacheName).request().put(Entity.json(configuration));
         assertThat(response.getStatus(), is(200));

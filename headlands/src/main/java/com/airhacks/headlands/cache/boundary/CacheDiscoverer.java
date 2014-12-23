@@ -8,6 +8,7 @@ import javax.annotation.PreDestroy;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
+import javax.cache.configuration.CompleteConfiguration;
 import javax.cache.configuration.MutableConfiguration;
 import javax.cache.spi.CachingProvider;
 import javax.ejb.ConcurrencyManagement;
@@ -68,6 +69,24 @@ public class CacheDiscoverer {
 
         this.cacheManager.createCache(cacheName, mutableConfiguration);
         return true;
+    }
+
+    public CacheConfiguration getConfiguration(String cacheName) {
+        Cache<String, String> cache = this.cacheManager.getCache(cacheName, String.class, String.class);
+        if (cache == null) {
+            return null;
+        }
+        CompleteConfiguration configuration = cache.getConfiguration(CompleteConfiguration.class);
+        if (configuration == null) {
+            return null;
+        }
+        boolean storeByValue = configuration.isStoreByValue();
+        boolean managementEnabled = configuration.isManagementEnabled();
+        boolean readThrough = configuration.isReadThrough();
+        boolean writeThrough = configuration.isWriteThrough();
+        boolean statisticsEnabled = configuration.isStatisticsEnabled();
+        return new CacheConfiguration(storeByValue, managementEnabled, statisticsEnabled, readThrough, writeThrough);
+
     }
 
     public Cache<String, String> getCache(String cacheName) {
