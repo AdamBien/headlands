@@ -1,6 +1,7 @@
 package com.airhacks.headlands.cache.boundary;
 
 import com.airhacks.headlands.cache.entity.CacheConfiguration;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -15,6 +16,8 @@ import javax.ejb.ConcurrencyManagement;
 import javax.ejb.ConcurrencyManagementType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.json.Json;
+import javax.json.stream.JsonGenerator;
 
 /**
  *
@@ -90,11 +93,25 @@ public class CacheDiscoverer {
     }
 
     public Cache<String, String> getCache(String cacheName) {
-        return this.cacheManager.getCache(cacheName);
+        return this.cacheManager.getCache(cacheName, String.class, String.class);
     }
 
     public void delete(String cacheName) {
         this.cacheManager.destroyCache(cacheName);
+    }
+
+    public long dumpInto(String cacheName, long maxEntries, OutputStream stream) {
+        Cache<String, String> cache = getCache(cacheName);
+        long counter = 0;
+        try (JsonGenerator gen = Json.createGenerator(stream)) {
+            gen.writeStartObject();
+            for (Cache.Entry<String, String> entry : cache) {
+                gen.write(entry.getKey(), entry.getValue());
+                counter++;
+            }
+            gen.writeEnd();
+        }
+        return counter;
     }
 
 }

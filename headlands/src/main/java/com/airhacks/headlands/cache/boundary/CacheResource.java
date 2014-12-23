@@ -4,8 +4,10 @@ import com.airhacks.headlands.cache.entity.CacheConfiguration;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -19,6 +21,9 @@ import javax.ws.rs.core.UriInfo;
 public class CacheResource {
 
     CacheDiscoverer discoverer;
+
+    @Context
+    ResourceContext rc;
 
     public CacheResource(CacheDiscoverer cd) {
         this.discoverer = cd;
@@ -40,6 +45,11 @@ public class CacheResource {
             return Response.noContent().build();
         }
         return Response.ok(configuration).build();
+    }
+
+    @Path("entries")
+    public EntriesResource entries(@PathParam("cacheName") @NotNull String cacheName) {
+        return rc.initResource(new EntriesResource(discoverer));
     }
 
 }
