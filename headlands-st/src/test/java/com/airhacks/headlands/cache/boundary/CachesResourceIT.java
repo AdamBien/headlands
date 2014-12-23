@@ -31,7 +31,7 @@ public class CachesResourceIT {
     }
 
     @Test
-    public void crud() {
+    public void crudCaches() {
         String cacheName = "cache-" + System.currentTimeMillis();
         Response response = this.tut.request(MediaType.APPLICATION_JSON).get();
         assertThat(response.getStatus(), is(200));
@@ -48,7 +48,6 @@ public class CachesResourceIT {
 
         response = this.tut.path(cacheName).request().put(Entity.json(configuration));
         assertThat(response.getStatus(), is(200));
-
     }
 
 }
