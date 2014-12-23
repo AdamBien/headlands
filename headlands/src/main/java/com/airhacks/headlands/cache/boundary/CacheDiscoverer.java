@@ -1,10 +1,11 @@
 package com.airhacks.headlands.cache.boundary;
 
-import com.airhacks.headlands.cache.Entity.CacheConfiguration;
+import com.airhacks.headlands.cache.entity.CacheConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
 import javax.cache.configuration.MutableConfiguration;
@@ -56,6 +57,8 @@ public class CacheDiscoverer {
     public boolean createCache(String cacheName, CacheConfiguration configuration) {
         MutableConfiguration<String, String> mutableConfiguration = new MutableConfiguration<>();
         if (cacheNames().contains(cacheName)) {
+            this.cacheManager.enableManagement(cacheName, configuration.isManagementEnabled());
+            this.cacheManager.enableStatistics(cacheName, configuration.isStatisticsEnabled());
             return false;
         }
         mutableConfiguration.setStoreByValue(configuration.isStoreByValue()).
@@ -65,6 +68,14 @@ public class CacheDiscoverer {
 
         this.cacheManager.createCache(cacheName, mutableConfiguration);
         return true;
+    }
+
+    public Cache<String, String> getCache(String cacheName) {
+        return this.cacheManager.getCache(cacheName);
+    }
+
+    public void delete(String cacheName) {
+        this.cacheManager.destroyCache(cacheName);
     }
 
 }

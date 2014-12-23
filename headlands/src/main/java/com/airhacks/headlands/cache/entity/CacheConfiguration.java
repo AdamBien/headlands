@@ -1,4 +1,4 @@
-package com.airhacks.headlands.cache.Entity;
+package com.airhacks.headlands.cache.entity;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

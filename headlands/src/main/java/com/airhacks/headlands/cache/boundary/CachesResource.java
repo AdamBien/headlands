@@ -1,6 +1,6 @@
 package com.airhacks.headlands.cache.boundary;
 
-import com.airhacks.headlands.cache.Entity.CacheConfiguration;
+import com.airhacks.headlands.cache.entity.CacheConfiguration;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
