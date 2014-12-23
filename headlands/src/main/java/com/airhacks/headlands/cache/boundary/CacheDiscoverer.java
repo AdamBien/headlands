@@ -1,5 +1,6 @@
-package com.airhacks.headlands.cache.control;
+package com.airhacks.headlands.cache.boundary;
 
+import com.airhacks.headlands.cache.Entity.CacheConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -48,20 +49,21 @@ public class CacheDiscoverer {
     /**
      *
      * @param cacheName -- the name of the cache.
+     * @param configuration - configuration used for the creation of
+     * MutableConfiguration
      * @return true - cache created, false - cache updated
      */
-    public boolean createCache(String cacheName) {
-        MutableConfiguration<String, String> configuration = new MutableConfiguration<>();
+    public boolean createCache(String cacheName, CacheConfiguration configuration) {
+        MutableConfiguration<String, String> mutableConfiguration = new MutableConfiguration<>();
         if (cacheNames().contains(cacheName)) {
             return false;
         }
-        configuration.setStoreByValue(false).
+        mutableConfiguration.setStoreByValue(configuration.isStoreByValue()).
                 setTypes(String.class, String.class).
-                setManagementEnabled(true).
-                setStoreByValue(true).
-                setStatisticsEnabled(true);
+                setManagementEnabled(configuration.isManagementEnabled()).
+                setStatisticsEnabled(configuration.isStatisticsEnabled());
 
-        this.cacheManager.createCache(cacheName, configuration);
+        this.cacheManager.createCache(cacheName, mutableConfiguration);
         return true;
     }
 

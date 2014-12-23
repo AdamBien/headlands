@@ -1,6 +1,6 @@
 package com.airhacks.headlands.cache.boundary;
 
-import com.airhacks.headlands.cache.control.CacheDiscoverer;
+import com.airhacks.headlands.cache.Entity.CacheConfiguration;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -36,8 +36,9 @@ public class CachesResource {
 
     @PUT
     @Path("{cacheName}")
-    public Response newCache(@PathParam("cacheName") @NotNull String cacheName, @Context UriInfo info) {
-        boolean created = discoverer.createCache(cacheName);
+    public Response newCache(@PathParam("cacheName") @NotNull String cacheName, CacheConfiguration cacheConfiguration, @Context UriInfo info) {
+
+        boolean created = discoverer.createCache(cacheName, cacheConfiguration);
         if (!created) {
             return Response.ok().header("x-info", "Cache: " + cacheName + " already created").build();
         }
