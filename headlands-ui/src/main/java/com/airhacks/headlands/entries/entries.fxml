@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.airhacks.headlands.entries.EntriesPresenter">
+    <children>
+        <TextField fx:id="key" layoutX="42.0" layoutY="120.0" text="key" />
+        <TextField fx:id="value" layoutX="245.0" layoutY="120.0" text="value" />
+        <Button layoutX="488.0" layoutY="120.0" mnemonicParsing="false" onAction="#store" text="Store" />
+        <TextField fx:id="queryKey" layoutX="42.0" layoutY="174.0" />
+        <Button layoutX="400.0" layoutY="174.0" mnemonicParsing="false" onAction="#retrieve" text="Retrieve" />
+        <Label fx:id="result" layoutX="245.0" layoutY="179.0" text="result" />
+      <Button layoutX="488.0" layoutY="174.0" mnemonicParsing="false" onAction="#remove" text="Remove" />
+    </children>
+</AnchorPane>

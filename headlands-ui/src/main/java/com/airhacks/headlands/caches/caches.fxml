@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.airhacks.headlands.caches.CachesPresenter">
+    <children>
+        <ComboBox fx:id="caches" layoutX="47.0" layoutY="110.0" onAction="#selectCache" prefWidth="150.0" promptText="caches" />
+        <Button fx:id="startButton" layoutX="47.0" layoutY="327.0" mnemonicParsing="false" onAction="#start" text="Start" />
+        <Button fx:id="stopButton" layoutX="122.0" layoutY="327.0" mnemonicParsing="false" onAction="#stop" text="Stop" />
+        <TextField fx:id="cacheNameField" layoutX="47.0" layoutY="174.0" />
+        <Button fx:id="createCache" layoutX="261.0" layoutY="174.0" mnemonicParsing="false" onAction="#createCache" text="Create" />
+    </children>
+</AnchorPane>
