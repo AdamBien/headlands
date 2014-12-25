@@ -34,6 +34,9 @@ public class CachesPresenter implements Initializable {
     Button stopButton;
 
     @FXML
+    Button createCacheButton;
+
+    @FXML
     TextField cacheNameField;
 
     @Override
@@ -41,6 +44,9 @@ public class CachesPresenter implements Initializable {
         BooleanProperty started = this.accessor.isStarted();
         startButton.disableProperty().bind(started);
         stopButton.disableProperty().bind(started.not());
+        cacheNameField.disableProperty().bind(started.not());
+        createCacheButton.disableProperty().bind(started.not());
+        caches.disableProperty().bind(started.not());
         caches.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             System.out.println("newValue = " + newValue);
             refreshCaches();

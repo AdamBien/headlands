@@ -12,6 +12,6 @@
         <Button fx:id="startButton" layoutX="47.0" layoutY="327.0" mnemonicParsing="false" onAction="#start" text="Start" />
         <Button fx:id="stopButton" layoutX="122.0" layoutY="327.0" mnemonicParsing="false" onAction="#stop" text="Stop" />
         <TextField fx:id="cacheNameField" layoutX="47.0" layoutY="174.0" />
-        <Button fx:id="createCache" layoutX="261.0" layoutY="174.0" mnemonicParsing="false" onAction="#createCache" text="Create" />
+        <Button fx:id="createCacheButton" layoutX="261.0" layoutY="174.0" mnemonicParsing="false" onAction="#createCache" text="Create" />
     </children>
 </AnchorPane>
