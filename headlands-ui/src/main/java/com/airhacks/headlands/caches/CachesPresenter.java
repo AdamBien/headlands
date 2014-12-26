@@ -1,6 +1,7 @@
 package com.airhacks.headlands.caches;
 
 import com.airhacks.headlands.CacheAccessor;
+import com.airhacks.headlands.HazelcastDiscoverer;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -39,6 +40,9 @@ public class CachesPresenter implements Initializable {
     @FXML
     TextField cacheNameField;
 
+    @Inject
+    HazelcastDiscoverer discoverer;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         BooleanProperty started = this.accessor.isStarted();
@@ -56,11 +60,12 @@ public class CachesPresenter implements Initializable {
     public void selectCache() {
         String selectedItem = caches.getSelectionModel().getSelectedItem();
         System.out.println("selectedItem = " + selectedItem);
+        this.accessor.selectCache(selectedItem);
 
     }
 
     void refreshCaches() {
-        List<String> cacheNames = this.accessor.getCacheNames();
+        List<String> cacheNames = discoverer.getMapNames();
         ObservableList<String> observableList = FXCollections.observableList(cacheNames);
         caches.setItems(observableList);
     }

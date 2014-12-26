@@ -91,4 +91,8 @@ public class CacheAccessor {
         this.currentCache.remove(key);
     }
 
+    public void selectCache(String cacheName) {
+        this.currentCache = this.cacheManager.getCache(cacheName, String.class, String.class);
+    }
+
 }
