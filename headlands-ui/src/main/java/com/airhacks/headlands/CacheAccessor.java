@@ -6,7 +6,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import static javafx.application.Platform.runLater;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javax.annotation.PostConstruct;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -20,7 +22,7 @@ import javax.cache.spi.CachingProvider;
  */
 public class CacheAccessor {
 
-    private Cache<String, String> currentCache;
+    private ObjectProperty<Cache<String, String>> currentCache;
     private CachingProvider cachingProvider;
     private CacheManager cacheManager;
 
@@ -31,12 +33,13 @@ public class CacheAccessor {
     @PostConstruct
     public void initialize() {
         System.setProperty("hazelcast.jcache.provider.type", "server");
+        this.currentCache = new SimpleObjectProperty<>();
         this.cacheStarted = new SimpleBooleanProperty();
         this.executor = Executors.newCachedThreadPool();
     }
 
     public void store(String keyString, String valueString) {
-        this.currentCache.put(keyString, valueString);
+        getCurrentCache().put(keyString, valueString);
     }
 
     public List<String> getCacheNames() {
@@ -61,7 +64,7 @@ public class CacheAccessor {
 
     public void stop() {
         this.executor.submit(() -> {
-            this.currentCache.close();
+            getCurrentCache().close();
             this.cacheManager.close();
             this.cachingProvider.close();
             runLater(() -> this.cacheStarted.set(false));
@@ -78,21 +81,37 @@ public class CacheAccessor {
                 setManagementEnabled(true).
                 setStoreByValue(true);
 
-        this.currentCache = cacheManager.
-                createCache(cacheName, configuration);
+        this.currentCache.set(cacheManager.
+                createCache(cacheName, configuration));
 
     }
 
     public String getValue(String key) {
-        return this.currentCache.get(key);
+        return getCurrentCache().get(key);
+    }
+
+    public List<Cache.Entry<String, String>> getAllEntries() {
+        List<Cache.Entry<String, String>> entries = new ArrayList<>();
+        for (Cache.Entry<String, String> entry : getCurrentCache()) {
+            entries.add(entry);
+        }
+        return entries;
     }
 
     public void remove(String key) {
-        this.currentCache.remove(key);
+        getCurrentCache().remove(key);
     }
 
     public void selectCache(String cacheName) {
-        this.currentCache = this.cacheManager.getCache(cacheName, String.class, String.class);
+        this.currentCache.set(this.cacheManager.getCache(cacheName, String.class, String.class));
+    }
+
+    Cache<String, String> getCurrentCache() {
+        return this.currentCache.get();
+    }
+
+    public ObjectProperty<Cache<String, String>> currentCacheProperty() {
+        return this.currentCache;
     }
 
 }
