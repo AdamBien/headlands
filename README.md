@@ -4,8 +4,27 @@ headlands
 REST Frontend For JSR-107
 
 ## Usage
-curl -i -XPUT http://localhost:8080/headlands/resources/caches/workshops
+
+### Create Cache
+
+curl -i -XPUT -H"Content-type: application/json" -d'{"storeByValue":true}' http://localhost:8080/headlands/resources/caches/workshops
+
+### Get cache names
 
 curl http://localhost:8080/headlands/resources/caches/      
 
-curl -i -XOPTIONS http://localhost:8080/headlands/resources/caches/workshops           
+### Cache Configuration
+
+curl -i -XOPTIONS http://localhost:8080/headlands/resources/caches/workshops  
+
+### put('chief','duke') at the workshops cache
+
+curl -i -XPUT -d'duke' http://localhost:8080/headlands/resources/caches/workshops/entries/chief
+
+### List entries for the cache "workshops"
+
+curl -i http://localhost:8080/headlands/resources/caches/workshops/entries/    
+
+### Delete the entry with the key: "chief" at the cache workshops
+
+curl -i -XDELETE http://localhost:8080/headlands/resources/caches/workshops/entries/chief      
