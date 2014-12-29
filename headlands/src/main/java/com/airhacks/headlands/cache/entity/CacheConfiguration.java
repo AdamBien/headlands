@@ -19,6 +19,11 @@ public class CacheConfiguration {
     boolean writeThrough;
 
     public CacheConfiguration() {
+        this.storeByValue = false;
+        this.managementEnabled = true;
+        this.statisticsEnabled = true;
+        this.readThrough = true;
+        this.writeThrough = true;
     }
 
     public CacheConfiguration(boolean storeByValue, boolean managementEnabled, boolean statisticsEnabled, boolean readThrough, boolean writeThrough) {

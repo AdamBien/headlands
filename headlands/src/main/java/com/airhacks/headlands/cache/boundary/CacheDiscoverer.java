@@ -59,6 +59,9 @@ public class CacheDiscoverer {
      * @return true - cache created, false - cache updated
      */
     public boolean createCache(String cacheName, CacheConfiguration configuration) {
+        if (configuration == null) {
+            configuration = new CacheConfiguration();
+        }
         MutableConfiguration<String, String> mutableConfiguration = new MutableConfiguration<>();
         if (cacheNames().contains(cacheName)) {
             this.cacheManager.enableManagement(cacheName, configuration.isManagementEnabled());
