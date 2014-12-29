@@ -137,4 +137,12 @@ public class CacheDiscoverer {
         }
         cache.remove(key);
     }
+
+    public void removeAll(String cacheName) {
+        Cache<String, String> cache = getCache(cacheName);
+        if (cache == null) {
+            return;
+        }
+        cache.removeAll();
+    }
 }

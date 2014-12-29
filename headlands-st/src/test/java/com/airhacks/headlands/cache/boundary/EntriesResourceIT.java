@@ -49,6 +49,22 @@ public class EntriesResourceIT {
 
         Response deletion = this.tut.path(cacheName).path("entries").path(expectedKey).request().delete();
         assertThat(deletion.getStatus(), is(200));
+    }
+
+    @Test
+    public void removeAll() {
+        String expectedValue = "java rocks " + System.currentTimeMillis();
+        String expectedKey = "should be deleted" + System.currentTimeMillis();
+        this.tut.path(cacheName).path("entries").path(expectedKey).request().put(Entity.text(expectedValue));
+
+        String actualValue = this.tut.path(cacheName).path("entries").path(expectedKey).request().get(String.class);
+        assertThat(actualValue, is(expectedValue));
+
+        Response deletion = this.tut.path(cacheName).path("entries").request().delete();
+        assertThat(deletion.getStatus(), is(200));
+
+        Response response = this.tut.path(cacheName).path("entries").path(expectedKey).request().get();
+        assertThat(response.getStatus(), is(204));
 
     }
 

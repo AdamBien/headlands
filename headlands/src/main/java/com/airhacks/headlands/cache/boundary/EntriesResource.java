@@ -51,6 +51,12 @@ public class EntriesResource {
         return Response.ok().build();
     }
 
+    @DELETE
+    public Response removeAll() {
+        this.discoverer.removeAll(cacheName);
+        return Response.ok().build();
+    }
+
     @PUT
     @Path("{key}")
     public Response save(@PathParam("key") @NotNull String key, String value) {
