@@ -28,3 +28,8 @@ curl -i http://localhost:8080/headlands/resources/caches/workshops/entries/
 ### Delete the entry with the key: "chief" at the cache workshops
 
 curl -i -XDELETE http://localhost:8080/headlands/resources/caches/workshops/entries/chief      
+
+
+### Delete all entries of the workshops cache
+
+curl -i -XDELETE http://localhost:8080/headlands/resources/caches/workshops/entries      
