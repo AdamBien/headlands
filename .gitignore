@@ -6,3 +6,4 @@ pom.xml.next
 release.properties
 nb-configuration.xml
 /headlands/copyToDocker.js
+release.sh
