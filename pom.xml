@@ -10,6 +10,18 @@
         <module>headlands-st</module>
         <module>headlands-ui</module>
     </modules>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <scm>
         <connection>scm:git:git@github.com:AdamBien/headlands.git</connection>
         <url>scm:git:git@github.com:AdamBien/headlands.git</url>
