@@ -5,7 +5,7 @@ RESTified JCACHE / JSR-107
 
 ## Installation
 
-1. Java 8 and Java EE 7 server. Tested with WildFly 8 and GlassFish v4
+1. Requirements: Java 8 and Java EE 7 server. Tested with WildFly 8 and GlassFish v4
 2. Download the [headlands.war](https://github.com/AdamBien/headlands/releases) and drop it into the "autodeployment" directory.
 
 ## Usage
