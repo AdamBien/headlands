@@ -1,7 +1,7 @@
 headlands
 =========
 
-REST Frontend For JSR-107
+RESTified JCACHE / JSR-107
 
 ## Usage
 
