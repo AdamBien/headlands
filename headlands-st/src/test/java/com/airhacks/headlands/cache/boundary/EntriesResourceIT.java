@@ -71,6 +71,7 @@ public class EntriesResourceIT {
     @After
     public void deleteCache() {
         this.tut.path(cacheName).request().delete();
+        this.client.close();
 
     }
 
