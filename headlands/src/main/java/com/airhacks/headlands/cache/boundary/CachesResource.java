@@ -1,5 +1,6 @@
 package com.airhacks.headlands.cache.boundary;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -9,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
@@ -25,10 +27,14 @@ public class CachesResource {
     ResourceContext rc;
 
     @GET
-    public JsonArray all() {
+    public JsonArray all(@Context UriInfo info) {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-        Iterable<String> cacheNames = discoverer.cacheNames();
-        cacheNames.forEach(arrayBuilder::add);
+        List<String> cacheNames = discoverer.cacheNames();
+        cacheNames.stream().map(n -> info.getAbsolutePathBuilder().
+                path(n).
+                build().
+                toASCIIString()).
+                forEach(arrayBuilder::add);
         return arrayBuilder.build();
     }
 
