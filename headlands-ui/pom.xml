@@ -31,7 +31,7 @@ limitations under the License.
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast-all</artifactId>
-            <version>3.3.3</version>
+            <version>3.4.1</version>
         </dependency>
         <dependency>
             <groupId>javax.cache</groupId>
