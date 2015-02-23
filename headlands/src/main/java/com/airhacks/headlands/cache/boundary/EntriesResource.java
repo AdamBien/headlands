@@ -1,6 +1,9 @@
 package com.airhacks.headlands.cache.boundary;
 
+import java.util.Set;
+import javax.json.JsonObject;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -62,6 +65,16 @@ public class EntriesResource {
     public Response save(@PathParam("key") @NotNull String key, String value) {
         this.discoverer.put(this.cacheName, key, value);
         return Response.ok().build();
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response save(JsonObject content) {
+        Set<String> keySet = content.keySet();
+        keySet.parallelStream().
+                forEach((k) -> this.discoverer.put(cacheName, k, content.getString(k)));
+        return Response.ok().
+                header("x-message", content.size() + " entries saved!").build();
     }
 
 }

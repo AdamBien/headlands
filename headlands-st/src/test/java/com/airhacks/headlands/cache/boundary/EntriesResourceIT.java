@@ -52,6 +52,26 @@ public class EntriesResourceIT {
     }
 
     @Test
+    public void bulkSave() {
+        String expectedValue = "java rocks " + System.currentTimeMillis();
+        String expectedKey = "status" + System.currentTimeMillis();
+
+        JsonObject input = Json.createObjectBuilder().add(expectedKey, expectedValue).build();
+
+        this.tut.path(cacheName).path("entries").request().put(Entity.json(input));
+
+        JsonObject cacheContent = this.tut.path(cacheName).path("entries").request().get(JsonObject.class);
+        System.out.println("cacheContent = " + cacheContent);
+        assertNotNull(cacheContent);
+
+        String actualValue = this.tut.path(cacheName).path("entries").path(expectedKey).request().get(String.class);
+        assertThat(actualValue, is(expectedValue));
+
+        Response deletion = this.tut.path(cacheName).path("entries").path(expectedKey).request().delete();
+        assertThat(deletion.getStatus(), is(200));
+    }
+
+    @Test
     public void removeAll() {
         String expectedValue = "java rocks " + System.currentTimeMillis();
         String expectedKey = "should be deleted" + System.currentTimeMillis();
