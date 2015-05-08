@@ -7,3 +7,4 @@ release.properties
 nb-configuration.xml
 /headlands/copyToDocker.js
 release.sh
+/headlands/build.sh
