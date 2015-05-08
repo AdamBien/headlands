@@ -29,6 +29,25 @@
 
     </dependencies>
     <build>
+        <plugins>
+            <plugin>
+                <groupId>com.sebastian-daschner</groupId>
+                <artifactId>jaxrs-analyzer-maven-plugin</artifactId>
+                <version>0.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>analyze-jaxrs</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Available backends, defaults to plaintext -->
+                            <!-- <backend>plaintext</backend> -->
+                            <backend>swagger</backend>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
         <finalName>headlands</finalName>
     </build>
     <properties>
