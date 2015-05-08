@@ -8,7 +8,7 @@
         <dependency>
             <groupId>com.airhacks</groupId>
             <artifactId>jaxrs-cors</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -19,14 +19,13 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast-all</artifactId>
-            <version>3.4.1</version>
+            <version>3.4.2</version>
         </dependency>
         <dependency>
             <groupId>javax.cache</groupId>
             <artifactId>cache-api</artifactId>
             <version>1.0.0</version>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>
