@@ -1,0 +1,284 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.1-SNAPSHOT",
+        "title": "headlands"
+    },
+    "host": "localhost:8080/headlands",
+    "basePath": "/resources",
+    "schemas": ["http"],
+    "paths": {
+        "/caches": {
+            "get": {
+                "consumes": [],
+                "produces": [],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "definition#1"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/caches/{cacheName}": {
+            "put": {
+                "consumes": [],
+                "produces": [],
+                "parameters": [{
+                        "name": "cacheName",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }, {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "definition#2"
+                        }
+                    }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "x-info": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created",
+                        "headers": {
+                            "Location": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "options": {
+                "consumes": [],
+                "produces": [],
+                "parameters": [{
+                        "name": "cacheName",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "schema": {
+                            "$ref": "definition#3"
+                        }
+                    },
+                    "204": {
+                        "description": "No Content",
+                        "headers": {}
+                    }
+                }
+            }
+        },
+        "/caches/{cacheName}/entries": {
+            "get": {
+                "consumes": [],
+                "produces": ["application/json"],
+                "parameters": [{
+                        "name": "cacheName",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }, {
+                        "name": "maxEntries",
+                        "in": "query",
+                        "required": true,
+                        "type": "integer"
+                    }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "schema": {}
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [],
+                "produces": [],
+                "parameters": [{
+                        "name": "cacheName",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {}
+                    }
+                }
+            },
+            "put": {
+                "consumes": ["application/json"],
+                "produces": [],
+                "parameters": [{
+                        "name": "cacheName",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }, {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {}
+                    }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "x-message": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/caches/{cacheName}/entries/{key}": {
+            "put": {
+                "consumes": [],
+                "produces": [],
+                "parameters": [{
+                        "name": "cacheName",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }, {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }, {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {}
+                    }
+                }
+            },
+            "get": {
+                "consumes": [],
+                "produces": [],
+                "parameters": [{
+                        "name": "cacheName",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }, {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [],
+                "produces": [],
+                "parameters": [{
+                        "name": "cacheName",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }, {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {}
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "definition#1": {
+            "properties": {
+                "entries": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "definition#3": {
+            "properties": {
+                "storeByValue": {
+                    "type": "boolean"
+                },
+                "managementEnabled": {
+                    "type": "boolean"
+                },
+                "statisticsEnabled": {
+                    "type": "boolean"
+                },
+                "readThrough": {
+                    "type": "boolean"
+                },
+                "writeThrough": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "definition#2": {
+            "properties": {
+                "storeByValue": {
+                    "type": "boolean"
+                },
+                "managementEnabled": {
+                    "type": "boolean"
+                },
+                "statisticsEnabled": {
+                    "type": "boolean"
+                },
+                "readThrough": {
+                    "type": "boolean"
+                },
+                "writeThrough": {
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}
