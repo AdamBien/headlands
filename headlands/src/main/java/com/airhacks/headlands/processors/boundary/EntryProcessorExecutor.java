@@ -6,13 +6,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import javax.cache.Cache;
 import javax.cache.processor.EntryProcessor;
 import javax.cache.processor.EntryProcessorResult;
-import javax.cache.processor.MutableEntry;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.script.Invocable;
@@ -56,17 +53,6 @@ public class EntryProcessorExecutor {
                     + " Problem in line: " + ex.getLineNumber()
                     + " Column: " + ex.getColumnNumber());
         }
-        final StringEntryProcessor stringProcessor = invocable.getInterface(StringEntryProcessor.class);
-        if (stringProcessor == null) {
-            return null;
-        }
-        return (MutableEntry<String, String> entry, Object... arguments) -> {
-            List<String> listArguments = Stream.of(arguments).
-                    map(a -> a.toString()).
-                    collect(Collectors.toList());
-            return stringProcessor.process(entry, listArguments);
-        };
-
+        return invocable.getInterface(EntryProcessor.class);
     }
-
 }

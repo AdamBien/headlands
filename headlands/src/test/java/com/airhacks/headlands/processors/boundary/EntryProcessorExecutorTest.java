@@ -44,4 +44,14 @@ public class EntryProcessorExecutorTest {
         assertThat(result, is(expected));
     }
 
+    @Test
+    public void createValidProcessorWithArgument() {
+        String expected = "works";
+        String processorScript = "function process(entry,arg){ return arg[0]}";
+        EntryProcessor<String, String, String> processor = this.cut.createProcessorFromScript(processorScript);
+        assertNotNull(processor);
+        String result = processor.process(null, expected);
+        assertThat(result, is(expected));
+    }
+
 }
