@@ -72,7 +72,6 @@ public class CacheDiscoverer {
                 setTypes(String.class, String.class).
                 setManagementEnabled(configuration.isManagementEnabled()).
                 setStatisticsEnabled(configuration.isStatisticsEnabled());
-
         this.cacheManager.createCache(cacheName, mutableConfiguration);
         return true;
     }
