@@ -31,6 +31,9 @@ public class EntryProcessorsResource {
     EntryProcessorExecutor executor;
 
     static final String ERROR_HEADER_KEY = "error";
+    static final String SCRIPT_KEY = "script";
+    static final String KEYS_KEY = "keys";
+    static final String ARGUMENTS_KEY = "arguments";
 
     @POST
     @Path("{cache}")
@@ -39,25 +42,25 @@ public class EntryProcessorsResource {
         Set<String> keys = null;
         Set<String> arguments = null;
 
-        if (input.isNull("script")) {
+        if (!input.containsKey(SCRIPT_KEY) || input.isNull(SCRIPT_KEY)) {
             return Response.status(Response.Status.BAD_REQUEST).
                     header(ERROR_HEADER_KEY, "script is required").
                     build();
         } else {
-            script = input.getString("script");
+            script = input.getString(SCRIPT_KEY);
 
         }
-        if (input.isNull("keys")) {
+        if (!input.containsKey(KEYS_KEY)) {
             keys = Collections.EMPTY_SET;
         } else {
-            JsonArray keysArray = input.getJsonArray("keys");
+            JsonArray keysArray = input.getJsonArray(KEYS_KEY);
             keys = convertJsonArrayToSet(keysArray);
         }
 
-        if (input.isNull(name)) {
+        if (!input.containsKey(ARGUMENTS_KEY)) {
             arguments = Collections.EMPTY_SET;
         } else {
-            JsonArray argsArray = input.getJsonArray("arguments");
+            JsonArray argsArray = input.getJsonArray(ARGUMENTS_KEY);
             arguments = convertJsonArrayToSet(argsArray);
         }
 

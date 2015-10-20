@@ -8,3 +8,4 @@ nb-configuration.xml
 /headlands/copyToDocker.js
 release.sh
 /headlands/build.sh
+/headlands/nbproject/
