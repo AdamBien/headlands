@@ -15,6 +15,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import org.junit.Rule;
@@ -56,6 +57,36 @@ public class EntryProcessorsResourceIT {
         JsonObject processorResult = response.readEntity(JsonObject.class);
         assertNotNull(processorResult);
         System.out.println("processorResult = " + processorResult);
+    }
+
+    @Test
+    public void executeProcessorsWithMalformedScript() throws IOException {
+        final WebTarget target = caches.target();
+        String cacheName = "gurus";
+        String key = "42";
+        String value = "nuke";
+
+        Response response = CachesResourceIT.createCache(target, cacheName);
+        assertThat(response, successful());
+
+        response = EntriesResourceIT.createEntry(target, cacheName, key, value);
+        assertThat(response, successful());
+
+        String script = loadScript("invalid.js");
+        JsonObject processor = createProcessor(script, key);
+
+        response = processors.target().
+                path(cacheName).
+                request(MediaType.APPLICATION_JSON).
+                post(Entity.json(processor));
+
+        assertThat(response.getStatus(), is(400));
+        String error = response.getHeaderString("error");
+        assertNotNull(error);
+        System.out.println("error = " + error);
+        String details = response.getHeaderString("details");
+        assertNotNull(details);
+        System.out.println("details = " + details);
     }
 
     @Test

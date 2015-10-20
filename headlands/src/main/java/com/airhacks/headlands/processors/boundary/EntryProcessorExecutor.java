@@ -10,7 +10,6 @@ import javax.annotation.PostConstruct;
 import javax.cache.Cache;
 import javax.cache.processor.EntryProcessor;
 import javax.cache.processor.EntryProcessorResult;
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -21,7 +20,6 @@ import javax.script.ScriptException;
  *
  * @author airhacks.com
  */
-@Stateless
 public class EntryProcessorExecutor {
 
     @Inject
@@ -54,7 +52,7 @@ public class EntryProcessorExecutor {
             Logger.getLogger(EntryProcessorExecutor.class.getName()).log(Level.SEVERE, null, ex);
             throw new IllegalStateException("Cannot interpret: " + script
                     + " Problem in line: " + ex.getLineNumber()
-                    + " Column: " + ex.getColumnNumber());
+                    + " Column: " + ex.getColumnNumber(), ex);
         }
         return invocable.getInterface(EntryProcessor.class);
     }

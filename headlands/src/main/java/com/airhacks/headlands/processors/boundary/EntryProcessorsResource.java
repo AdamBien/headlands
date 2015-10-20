@@ -71,7 +71,15 @@ public class EntryProcessorsResource {
             arguments = convertJsonArrayToSet(argsArray);
         }
 
-        Map<String, EntryProcessorResult<String>> result = executor.execute(name, script, keys, arguments);
+        Map<String, EntryProcessorResult<String>> result = null;
+        try {
+            result = executor.execute(name, script, keys, arguments);
+        } catch (IllegalStateException e) {
+            return Response.status(Response.Status.BAD_REQUEST).
+                    header(ERROR_HEADER_KEY, e.getCause().getMessage()).
+                    header(DETAILS_KEY, e.getMessage()).
+                    build();
+        }
         if (result.isEmpty()) {
             return Response.noContent().
                     header(DETAILS_KEY, "EntryProcessor returned null").
@@ -82,7 +90,8 @@ public class EntryProcessorsResource {
             result.entrySet().stream().forEach(e -> builder.add(e.getKey(), e.getValue().get()));
         } catch (EntryProcessorException e) {
             return Response.serverError().header(ERROR_HEADER_KEY, "EntryProcessorException").
-                    header("detail", e.getMessage()).build();
+                    header(DETAILS_KEY, e.getMessage()).
+                    build();
         }
         final JsonObject payload = builder.build();
         return Response.ok(payload).build();
