@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response;
  * @author airhacks.com
  */
 @Stateless
-@Path("processors")
+@Path("entry-processors")
 public class EntryProcessorsResource {
 
     @Inject
