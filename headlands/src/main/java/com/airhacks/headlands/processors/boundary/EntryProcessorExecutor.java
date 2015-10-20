@@ -1,7 +1,6 @@
 package com.airhacks.headlands.processors.boundary;
 
 import com.airhacks.headlands.cache.boundary.CacheDiscoverer;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -37,7 +36,7 @@ public class EntryProcessorExecutor {
         this.invocable = (Invocable) scriptEngine;
     }
 
-    public Map<String, EntryProcessorResult<String>> execute(String cacheName, String script, Set<String> keys, List<String> arguments) {
+    public Map<String, EntryProcessorResult<String>> execute(String cacheName, String script, Set<String> keys, Set<String> arguments) {
         Cache<String, String> cache = discoverer.getCache(cacheName);
         Object[] args = arguments.toArray();
         EntryProcessor<String, String, String> processor = createProcessorFromScript(script);
