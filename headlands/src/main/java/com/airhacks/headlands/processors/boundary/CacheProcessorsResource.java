@@ -56,7 +56,7 @@ public class CacheProcessorsResource {
         try {
             result.entrySet().stream().forEach(e -> builder.add(e.getKey(), e.getValue()));
         } catch (EntryProcessorException e) {
-            return Response.serverError().header(ERROR_HEADER_KEY, "EntryProcessorException").
+            return Response.serverError().header(ERROR_HEADER_KEY, "CacheProcessorException").
                     header(DETAILS_KEY, e.getMessage()).
                     build();
         }

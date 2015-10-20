@@ -9,6 +9,6 @@ import javax.cache.Cache;
  */
 public interface CacheProcessor {
 
-    Map<String, String> process(Cache<String, String> cache);
+    Map<String, String> process(Cache<String, String> cache, Map<String, String> empty);
 
 }
