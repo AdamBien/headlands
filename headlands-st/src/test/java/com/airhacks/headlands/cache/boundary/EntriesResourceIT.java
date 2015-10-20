@@ -1,9 +1,11 @@
 package com.airhacks.headlands.cache.boundary;
 
+import static com.airhacks.rulz.jaxrsclient.HttpMatchers.successful;
 import com.airhacks.rulz.jaxrsclient.JAXRSClientProvider;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.After;
@@ -35,7 +37,8 @@ public class EntriesResourceIT {
     public void crudEntries() {
         String expectedValue = "java rocks " + System.currentTimeMillis();
         String expectedKey = "status" + System.currentTimeMillis();
-        this.tut.target().path(cacheName).path("entries").path(expectedKey).request().put(Entity.text(expectedValue));
+        Response response = createEntry(this.tut.target(), this.cacheName, expectedKey, expectedValue);
+        assertThat(response, successful());
 
         JsonObject cacheContent = this.tut.target().path(cacheName).path("entries").request().get(JsonObject.class);
         System.out.println("cacheContent = " + cacheContent);
@@ -46,6 +49,10 @@ public class EntriesResourceIT {
 
         Response deletion = this.tut.target().path(cacheName).path("entries").path(expectedKey).request().delete();
         assertThat(deletion.getStatus(), is(200));
+    }
+
+    public static Response createEntry(WebTarget caches, String cache, String key, String value) {
+        return caches.path(cache).path("entries").path(key).request().put(Entity.text(value));
     }
 
     @Test
