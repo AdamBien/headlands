@@ -28,7 +28,7 @@ import org.junit.Test;
 public class EntryProcessorsResourceIT {
 
     @Rule
-    public JAXRSClientProvider processors = JAXRSClientProvider.buildWithURI("http://localhost:8080/headlands/resources/processors");
+    public JAXRSClientProvider processors = JAXRSClientProvider.buildWithURI("http://localhost:8080/headlands/resources/entry-processors");
 
     @Rule
     public JAXRSClientProvider caches = JAXRSClientProvider.buildWithURI("http://localhost:8080/headlands/resources/caches");
