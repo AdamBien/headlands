@@ -39,7 +39,7 @@ public class EntryProcessorsResource {
         Set<String> keys = null;
         Set<String> arguments = null;
 
-        if (!input.isNull("script")) {
+        if (input.isNull("script")) {
             return Response.status(Response.Status.BAD_REQUEST).
                     header(ERROR_HEADER_KEY, "script is required").
                     build();
@@ -76,7 +76,6 @@ public class EntryProcessorsResource {
     Set<String> convertJsonArrayToSet(JsonArray input) {
         List<JsonString> values = input.getValuesAs(JsonString.class);
         return values.stream().map(v -> v.getString()).collect(Collectors.toSet());
-
     }
 
 }
