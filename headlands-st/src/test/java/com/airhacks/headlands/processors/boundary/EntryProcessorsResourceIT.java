@@ -2,6 +2,7 @@ package com.airhacks.headlands.processors.boundary;
 
 import com.airhacks.headlands.cache.boundary.CachesResourceIT;
 import com.airhacks.headlands.cache.boundary.EntriesResourceIT;
+import static com.airhacks.rulz.jaxrsclient.HttpMatchers.noContent;
 import static com.airhacks.rulz.jaxrsclient.HttpMatchers.successful;
 import com.airhacks.rulz.jaxrsclient.JAXRSClientProvider;
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class EntryProcessorsResourceIT {
         response = EntriesResourceIT.createEntry(target, cacheName, key, value);
         assertThat(response, successful());
 
-        String script = loadScript();
+        String script = loadScript("processor.js");
         JsonObject processor = createProcessor(script, key);
 
         response = processors.target().
@@ -55,11 +56,30 @@ public class EntryProcessorsResourceIT {
         JsonObject processorResult = response.readEntity(JsonObject.class);
         assertNotNull(processorResult);
         System.out.println("processorResult = " + processorResult);
-
     }
 
-    String loadScript() throws IOException {
-        byte[] content = Files.readAllBytes(Paths.get("src/test/resources/processor.js"));
+    @Test
+    public void executeProcessorsWithNonExistingKey() throws IOException {
+        final WebTarget target = caches.target();
+        String cacheName = "gurus";
+        String key = "42" + System.currentTimeMillis();
+
+        Response response = CachesResourceIT.createCache(target, cacheName);
+        assertThat(response, successful());
+
+        String script = loadScript("passthrough.js");
+        JsonObject processor = createProcessor(script, key);
+
+        response = processors.target().
+                path(cacheName).
+                request(MediaType.APPLICATION_JSON).
+                post(Entity.json(processor));
+
+        assertThat(response, noContent());
+    }
+
+    String loadScript(String fileName) throws IOException {
+        byte[] content = Files.readAllBytes(Paths.get("src/test/resources/" + fileName));
         return new String(content, "UTF-8");
     }
 

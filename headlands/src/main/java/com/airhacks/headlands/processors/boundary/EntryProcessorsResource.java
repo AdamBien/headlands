@@ -34,6 +34,7 @@ public class EntryProcessorsResource {
     static final String SCRIPT_KEY = "script";
     static final String KEYS_KEY = "keys";
     static final String ARGUMENTS_KEY = "arguments";
+    static final String DETAILS_KEY = "details";
 
     @POST
     @Path("{cache}")
@@ -41,6 +42,12 @@ public class EntryProcessorsResource {
         String script = null;
         Set<String> keys = null;
         Set<String> arguments = null;
+
+        if (!executor.cacheExists(name)) {
+            return Response.status(Response.Status.BAD_REQUEST).
+                    header(ERROR_HEADER_KEY, "Cache: " + name + " does not exist").
+                    build();
+        }
 
         if (!input.containsKey(SCRIPT_KEY) || input.isNull(SCRIPT_KEY)) {
             return Response.status(Response.Status.BAD_REQUEST).
@@ -65,6 +72,11 @@ public class EntryProcessorsResource {
         }
 
         Map<String, EntryProcessorResult<String>> result = executor.execute(name, script, keys, arguments);
+        if (result.isEmpty()) {
+            return Response.noContent().
+                    header(DETAILS_KEY, "EntryProcessor returned null").
+                    build();
+        }
         JsonObjectBuilder builder = Json.createObjectBuilder();
         try {
             result.entrySet().stream().forEach(e -> builder.add(e.getKey(), e.getValue().get()));
