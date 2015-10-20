@@ -45,6 +45,10 @@ public class CacheDiscoverer {
         return caches;
     }
 
+    public boolean cacheExists(String name) {
+        return cacheNames().contains(name);
+    }
+
     @PreDestroy
     public void shutdown() {
         this.cacheManager.close();
