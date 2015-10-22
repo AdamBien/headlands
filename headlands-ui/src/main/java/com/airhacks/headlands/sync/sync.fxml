@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.airhacks.headlands.sync.SyncPresenter">
+   <children>
+      <TextField fx:id="input" layoutX="177.0" layoutY="86.0" text="http://localhost:8080" />
+      <Label fx:id="fromLbl" layoutX="119.0" layoutY="91.0" text="From" />
+      <Label fx:id="toLbl" layoutX="119.0" layoutY="155.0" text="To" />
+      <TextField fx:id="output" layoutX="177.0" layoutY="150.0" text="http://localhost:8080" />
+      <Button layoutX="406.0" layoutY="113.0" mnemonicParsing="false" onAction="#sync" text="Sync" />
+   </children>
+</AnchorPane>
