@@ -10,6 +10,7 @@
             <artifactId>jaxrs-cors</artifactId>
             <version>0.0.2</version>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -23,6 +24,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.airhacks</groupId>
+            <artifactId>porcupine-spy</artifactId>
+            <version>0.0.4</version>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
@@ -34,7 +40,6 @@
             <version>3.5.3</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>javax.cache</groupId>
             <artifactId>cache-api</artifactId>

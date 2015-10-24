@@ -1,12 +1,12 @@
 {
     "swagger": "2.0",
     "info": {
-        "version": "0.1-SNAPSHOT",
+        "version": "0.0.3-SNAPSHOT",
         "title": "headlands"
     },
-    "host": "localhost:8080/headlands",
+    "host": "http://localhost:8080/headlands/resources",
     "basePath": "/resources",
-    "schemas": ["http"],
+    "schemes": ["http"],
     "paths": {
         "/caches": {
             "get": {
@@ -20,7 +20,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "definition#1"
+                                "$ref": "#/definitions/definition_1"
                             }
                         }
                     }
@@ -28,6 +28,29 @@
             }
         },
         "/caches/{cacheName}": {
+            "options": {
+                "consumes": [],
+                "produces": [],
+                "parameters": [{
+                        "name": "cacheName",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "schema": {
+                            "$ref": "#/definitions/definition_2"
+                        }
+                    },
+                    "204": {
+                        "description": "No Content",
+                        "headers": {}
+                    }
+                }
+            },
             "put": {
                 "consumes": [],
                 "produces": [],
@@ -41,7 +64,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "definition#2"
+                            "$ref": "#/definitions/definition_3"
                         }
                     }],
                 "responses": {
@@ -60,29 +83,6 @@
                                 "type": "string"
                             }
                         }
-                    }
-                }
-            },
-            "options": {
-                "consumes": [],
-                "produces": [],
-                "parameters": [{
-                        "name": "cacheName",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "headers": {},
-                        "schema": {
-                            "$ref": "definition#3"
-                        }
-                    },
-                    "204": {
-                        "description": "No Content",
-                        "headers": {}
                     }
                 }
             }
@@ -105,8 +105,7 @@
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "headers": {},
-                        "schema": {}
+                        "headers": {}
                     }
                 }
             },
@@ -153,6 +152,30 @@
             }
         },
         "/caches/{cacheName}/entries/{key}": {
+            "get": {
+                "consumes": [],
+                "produces": [],
+                "parameters": [{
+                        "name": "cacheName",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }, {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "put": {
                 "consumes": [],
                 "produces": [],
@@ -181,30 +204,6 @@
                     }
                 }
             },
-            "get": {
-                "consumes": [],
-                "produces": [],
-                "parameters": [{
-                        "name": "cacheName",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }, {
-                        "name": "key",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "headers": {},
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "delete": {
                 "consumes": [],
                 "produces": [],
@@ -229,7 +228,7 @@
         }
     },
     "definitions": {
-        "definition#1": {
+        "definition_1": {
             "properties": {
                 "entries": {
                     "type": "string"
@@ -242,7 +241,7 @@
                 }
             }
         },
-        "definition#3": {
+        "definition_3": {
             "properties": {
                 "storeByValue": {
                     "type": "boolean"
@@ -261,7 +260,7 @@
                 }
             }
         },
-        "definition#2": {
+        "definition_2": {
             "properties": {
                 "storeByValue": {
                     "type": "boolean"
