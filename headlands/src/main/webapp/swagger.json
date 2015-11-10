@@ -1,10 +1,10 @@
 {
     "swagger": "2.0",
     "info": {
-        "version": "0.0.3-SNAPSHOT",
+        "version": "0.0.3",
         "title": "headlands"
     },
-    "host": "http://localhost:8080/headlands/resources",
+    "host": "localhost:8080/headlands/resources",
     "basePath": "/resources",
     "schemes": ["http"],
     "paths": {
