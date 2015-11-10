@@ -47,7 +47,7 @@ limitations under the License.
         <dependency>
             <groupId>com.airhacks</groupId>
             <artifactId>afterburner.fx</artifactId>
-            <version>1.6.3-SNAPSHOT</version>
+            <version>1.6.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
