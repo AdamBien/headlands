@@ -100,7 +100,7 @@ public class EntryProcessorsResourceIT {
 
         String script = loadScript("passthrough.js");
         JsonObject processor = createProcessor(script, key);
-
+        System.out.println("processor = " + processor);
         response = processors.target().
                 path(cacheName).
                 request(MediaType.APPLICATION_JSON).
