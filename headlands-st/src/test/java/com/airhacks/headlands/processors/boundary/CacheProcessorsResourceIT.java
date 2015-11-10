@@ -14,8 +14,9 @@ import javax.json.JsonString;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import org.hamcrest.CoreMatchers;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import org.junit.Rule;
@@ -55,14 +56,19 @@ public class CacheProcessorsResourceIT {
         assertThat(response, successful());
         JsonObject processorResult = response.readEntity(JsonObject.class);
         assertNotNull(processorResult);
-        assertThat(processorResult.keySet(), CoreMatchers.hasItem(key));
+        assertThat(processorResult.keySet(), hasItem(key));
         List<String> values = processorResult.
                 values().
                 stream().
                 map(j -> (JsonString) j).
                 map(json -> json.getString()).
                 collect(Collectors.toList());
-        assertThat(values, CoreMatchers.hasItem(value));
+        assertThat(values, hasItem(value));
+
+        MultivaluedMap<String, Object> headers = response.getHeaders();
+        headers.entrySet().forEach((t) -> {
+            System.out.println("Key: " + t.getKey() + " value: " + t.getValue());
+        });
     }
 
     String loadScript(String fileName) throws IOException {
