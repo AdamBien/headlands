@@ -38,7 +38,7 @@ curl -i -XDELETE http://localhost:8080/headlands/resources/caches/workshops/entr
 
 curl -i -XDELETE http://localhost:8080/headlands/resources/caches/workshops/entries
 
-### Submit and execute a cache processor to the workshops cache
+### Submit and execute a cache processor written in JavaScript (Nashorn) to the workshops cache. A cache processor has access to the entire cache with the specified name. The result is just a convenience Map which is going to be serialized and sent back to the client.
 
 curl -i --data 'function process(cache, result) { 
     for each (entry in cache) { 
@@ -53,3 +53,5 @@ curl -i --data 'function process(cache, result) {
 Output: 
 
 {"chief":"dukeresult"}
+
+### Submit and execute a cache processor to the workshops cache
