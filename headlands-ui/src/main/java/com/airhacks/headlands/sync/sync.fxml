@@ -13,6 +13,7 @@
       <Label fx:id="fromLbl" layoutX="119.0" layoutY="91.0" text="From" />
       <Label fx:id="toLbl" layoutX="119.0" layoutY="155.0" text="To" />
       <TextField fx:id="output" layoutX="177.0" layoutY="150.0" text="http://localhost:8080" />
-      <Button layoutX="406.0" layoutY="113.0" mnemonicParsing="false" onAction="#sync" text="Sync" />
+      <Button fx:id="syncButton" layoutX="406.0" layoutY="113.0" mnemonicParsing="false" onAction="#sync" text="Sync" />
+      <Label fx:id="fromInfo" layoutX="177.0" layoutY="118.0" prefHeight="17.0" prefWidth="167.0" />
    </children>
 </AnchorPane>
