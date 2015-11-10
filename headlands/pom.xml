@@ -61,7 +61,7 @@
                             <!-- Available backends, defaults to plaintext -->
                             <!-- <backend>plaintext</backend> -->
                             <backend>swagger</backend>
-                            <deployedDomain>localhost:8080/headlands/resources</deployedDomain>
+                            <deployedDomain>localhost:8080/headlands</deployedDomain>
                         </configuration>
                     </execution>
                 </executions>
