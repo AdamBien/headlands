@@ -66,7 +66,7 @@ curl -i -H'Content-type:application/json' -XPOST --data 'function process(cache,
 
 Output: 
 ```
-{"chief":"dukeresult"}
+{"chief":"duke result"}
 ```
 
 ### Submit and execute an [entry processor](http://ignite.apache.org/jcache/1.0.0/javadoc/javax/cache/processor/EntryProcessor.html) which operates on the specified keys.
@@ -81,6 +81,6 @@ curl -i -H'Content-type:application/json' -XPOST --data '{
 Output:
 
 ```
-{"chief":"duke result"}    
+{"chief":"The answer: duke"}
 ```
 
