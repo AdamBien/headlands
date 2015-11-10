@@ -34,7 +34,22 @@ curl -i http://localhost:8080/headlands/resources/caches/workshops/entries/
 
 curl -i -XDELETE http://localhost:8080/headlands/resources/caches/workshops/entries/chief      
 
-
 ### Delete all entries of the workshops cache
 
-curl -i -XDELETE http://localhost:8080/headlands/resources/caches/workshops/entries      
+curl -i -XDELETE http://localhost:8080/headlands/resources/caches/workshops/entries
+
+### Submit and execute a cache processor to the workshops cache
+
+curl -i --data 'function process(cache, result) { 
+    for each (entry in cache) { 
+        var key = entry.key; 
+        var value = entry.value; 
+        print(key, "=", value); 
+        result.put(key, value+" result"); 
+    } 
+    return result; 
+}' \ -XPOST http://localhost:8080/headlands/resources/cache-processors/workshops
+
+Output: 
+
+{"chief":"dukeresult"}
