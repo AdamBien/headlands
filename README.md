@@ -40,7 +40,7 @@ curl -i -XDELETE http://localhost:8080/headlands/resources/caches/workshops/entr
 
 ### Submit and execute a cache processor written in JavaScript (Nashorn) to the workshops cache. A cache processor has access to the entire cache with the specified name. The result is just a convenience Map which is going to be serialized and sent back to the client.
 
-curl -i --data 'function process(cache, result) { 
+curl -i -H'Content-type:application/json' -XPOST --data 'function process(cache, result) { 
     for each (entry in cache) { 
         var key = entry.key; 
         var value = entry.value; 
@@ -48,10 +48,17 @@ curl -i --data 'function process(cache, result) {
         result.put(key, value+" result"); 
     } 
     return result; 
-}' \ -XPOST http://localhost:8080/headlands/resources/cache-processors/workshops
+}' http://localhost:8080/headlands/resources/cache-processors/workshops
 
 Output: 
 
 {"chief":"dukeresult"}
 
-### Submit and execute a cache processor to the workshops cache
+### Submit and execute an [entry processor](http://ignite.apache.org/jcache/1.0.0/javadoc/javax/cache/processor/EntryProcessor.html) which operates on the specified keys.
+
+curl -i -H'Content-type:application/json' -XPOST --data '{
+  "script" : "function process(entry, args) {return \"The answer: \" + entry.getValue();}",
+  "keys" : [
+    "chief"
+  ]
+}' http://localhost:8080/headlands/resources/entry-processors/workshops
