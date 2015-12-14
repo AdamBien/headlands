@@ -1,6 +1,6 @@
 package com.airhacks.headlands.processors.boundary;
 
-import com.airhacks.headlands.cache.boundary.CacheDiscoverer;
+import com.airhacks.headlands.cache.control.Initializer;
 import com.airhacks.headlands.engine.control.NashornEngine;
 import com.airhacks.headlands.processors.control.CacheProcessor;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import javax.inject.Inject;
 public class CacheProcessorExecutor {
 
     @Inject
-    CacheDiscoverer discoverer;
+    Initializer discoverer;
 
     @Inject
     NashornEngine engine;

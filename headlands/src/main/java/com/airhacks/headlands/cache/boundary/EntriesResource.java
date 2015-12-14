@@ -1,5 +1,6 @@
 package com.airhacks.headlands.cache.boundary;
 
+import com.airhacks.headlands.cache.control.Initializer;
 import java.util.Set;
 import javax.json.JsonObject;
 import javax.validation.constraints.NotNull;
@@ -22,13 +23,13 @@ import javax.ws.rs.core.StreamingOutput;
  */
 public class EntriesResource {
 
-    private CacheDiscoverer discoverer;
+    private Initializer discoverer;
 
     @PathParam("cacheName")
     @NotNull
     private String cacheName;
 
-    public EntriesResource(CacheDiscoverer discoverer) {
+    public EntriesResource(Initializer discoverer) {
         this.discoverer = discoverer;
     }
 
@@ -44,6 +45,7 @@ public class EntriesResource {
     @GET
     @Path("{key}")
     public String getValue(@PathParam("key") String key) {
+
         return this.discoverer.get(cacheName, key);
     }
 

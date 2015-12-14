@@ -1,5 +1,7 @@
 package com.airhacks.headlands.cache.boundary;
 
+import com.airhacks.headlands.cache.control.ConfigurationExposer;
+import com.airhacks.headlands.cache.control.Initializer;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -24,7 +26,10 @@ import javax.ws.rs.core.UriInfo;
 public class CachesResource {
 
     @Inject
-    CacheDiscoverer discoverer;
+    Initializer initializer;
+
+    @Inject
+    ConfigurationExposer exposer;
 
     @Context
     ResourceContext rc;
@@ -32,7 +37,7 @@ public class CachesResource {
     @GET
     public JsonArray all(@Context UriInfo info) {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-        List<String> cacheNames = discoverer.cacheNames();
+        List<String> cacheNames = initializer.cacheNames();
         cacheNames.stream().map(n -> createCacheLinks(info, n)).
                 forEach(arrayBuilder::add);
         return arrayBuilder.build();
@@ -51,7 +56,7 @@ public class CachesResource {
 
     @Path("{cacheName}")
     public CacheResource newCache() {
-        return rc.initResource(new CacheResource(discoverer));
+        return rc.initResource(new CacheResource(this.initializer, this.exposer));
     }
 
 }

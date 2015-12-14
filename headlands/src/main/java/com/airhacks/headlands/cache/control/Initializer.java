@@ -1,4 +1,4 @@
-package com.airhacks.headlands.cache.boundary;
+package com.airhacks.headlands.cache.control;
 
 import com.airhacks.headlands.cache.entity.CacheConfiguration;
 import java.io.OutputStream;
@@ -9,7 +9,6 @@ import javax.annotation.PreDestroy;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
-import javax.cache.configuration.CompleteConfiguration;
 import javax.cache.configuration.MutableConfiguration;
 import javax.cache.spi.CachingProvider;
 import javax.ejb.ConcurrencyManagement;
@@ -18,6 +17,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.json.Json;
 import javax.json.stream.JsonGenerator;
+import javax.ws.rs.Produces;
 
 /**
  *
@@ -26,16 +26,26 @@ import javax.json.stream.JsonGenerator;
 @Startup
 @Singleton
 @ConcurrencyManagement(ConcurrencyManagementType.BEAN)
-public class CacheDiscoverer {
+public class Initializer {
 
-    private CachingProvider cachingProvider;
-    private CacheManager cacheManager;
+    CachingProvider cachingProvider;
+    CacheManager cacheManager;
 
     @PostConstruct
     public void boot() {
         System.setProperty("hazelcast.jcache.provider.type", "server");
         this.cachingProvider = Caching.getCachingProvider();
         this.cacheManager = cachingProvider.getCacheManager();
+    }
+
+    @Produces
+    public CachingProvider cachingProvider() {
+        return this.cachingProvider;
+    }
+
+    @Produces
+    public CacheManager cacheManager() {
+        return this.cacheManager;
     }
 
     public List<String> cacheNames() {
@@ -78,24 +88,6 @@ public class CacheDiscoverer {
                 setStatisticsEnabled(configuration.isStatisticsEnabled());
         this.cacheManager.createCache(cacheName, mutableConfiguration);
         return true;
-    }
-
-    public CacheConfiguration getConfiguration(String cacheName) {
-        Cache<String, String> cache = this.cacheManager.getCache(cacheName, String.class, String.class);
-        if (cache == null) {
-            return null;
-        }
-        CompleteConfiguration configuration = cache.getConfiguration(CompleteConfiguration.class);
-        if (configuration == null) {
-            return null;
-        }
-        boolean storeByValue = configuration.isStoreByValue();
-        boolean managementEnabled = configuration.isManagementEnabled();
-        boolean readThrough = configuration.isReadThrough();
-        boolean writeThrough = configuration.isWriteThrough();
-        boolean statisticsEnabled = configuration.isStatisticsEnabled();
-        return new CacheConfiguration(storeByValue, managementEnabled, statisticsEnabled, readThrough, writeThrough);
-
     }
 
     public Cache<String, String> getCache(String cacheName) {

@@ -1,6 +1,6 @@
 package com.airhacks.headlands.notifications.boundary;
 
-import com.airhacks.headlands.cache.boundary.CacheDiscoverer;
+import com.airhacks.headlands.cache.control.Initializer;
 import javax.inject.Inject;
 
 /**
@@ -10,7 +10,7 @@ import javax.inject.Inject;
 public class NotificationsEdge {
 
     @Inject
-    CacheDiscoverer discoverer;
+    Initializer discoverer;
 
     public void registerListener(String cacheName) {
 

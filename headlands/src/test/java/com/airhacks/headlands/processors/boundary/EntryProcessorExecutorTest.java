@@ -1,6 +1,6 @@
 package com.airhacks.headlands.processors.boundary;
 
-import com.airhacks.headlands.cache.boundary.CacheDiscoverer;
+import com.airhacks.headlands.cache.control.Initializer;
 import com.airhacks.headlands.engine.control.NashornEngine;
 import java.util.HashSet;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class EntryProcessorExecutorTest {
         engine.initializeEngine();
         this.cut = new EntryProcessorExecutor();
         this.cut.engine = engine;
-        this.cut.discoverer = mock(CacheDiscoverer.class);
+        this.cut.discoverer = mock(Initializer.class);
         this.cache = mock(Cache.class);
         when(this.cut.discoverer.getCache(existingCache)).thenReturn(cache);
     }
