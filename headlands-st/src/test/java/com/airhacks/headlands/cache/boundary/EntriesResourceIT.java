@@ -7,6 +7,7 @@ import javax.json.JsonObject;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.After;
 import static org.junit.Assert.assertNotNull;
@@ -25,12 +26,13 @@ public class EntriesResourceIT {
     public JAXRSClientProvider tut = JAXRSClientProvider.buildWithURI("http://localhost:8080/headlands/resources/caches");
     private String cacheName;
 
+    final static long EXPIRY = 4242;
+
     @Before
     public void init() {
         this.cacheName = "cache-" + System.currentTimeMillis();
-        JsonObject configuration = Json.createObjectBuilder().build();
-        this.tut.target().path(cacheName).request().put(Entity.json(configuration));
-
+        Response response = CachesResourceIT.createCacheWithExpiration(tut.target(), EXPIRY, cacheName);
+        assertThat(response.getStatusInfo().getFamily(), is(Response.Status.Family.SUCCESSFUL));
     }
 
     @Test
@@ -49,6 +51,19 @@ public class EntriesResourceIT {
 
         Response deletion = this.tut.target().path(cacheName).path("entries").path(expectedKey).request().delete();
         assertThat(deletion.getStatus(), is(200));
+    }
+
+    @Test
+    public void cacheControl() {
+        String expectedValue = "expiry " + System.currentTimeMillis();
+        String expectedKey = "cacheControl " + System.currentTimeMillis();
+        createEntry(this.tut.target(), this.cacheName, expectedKey, expectedValue);
+
+        Response response = this.tut.target().path(cacheName).path("entries").path(expectedKey).request().get();
+        String cacheControl = response.getHeaderString("Cache-Control");
+        assertNotNull(cacheControl);
+        assertThat(cacheControl, containsString("max-age"));
+
     }
 
     public static Response createEntry(WebTarget caches, String cache, String key, String value) {
