@@ -14,7 +14,7 @@ import javax.inject.Inject;
  *
  * @author airhacks.com
  */
-public class ConfigurationExposer {
+public class ConfigurationProvider {
 
     @Inject
     CacheManager cacheManager;

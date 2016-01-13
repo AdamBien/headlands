@@ -1,5 +1,6 @@
 package com.airhacks.headlands.cache.boundary;
 
+import com.airhacks.headlands.cache.control.ConfigurationProvider;
 import com.airhacks.headlands.cache.control.Initializer;
 import java.util.Set;
 import javax.json.JsonObject;
@@ -28,9 +29,11 @@ public class EntriesResource {
     @PathParam("cacheName")
     @NotNull
     private String cacheName;
+    private final ConfigurationProvider configuration;
 
-    public EntriesResource(Initializer discoverer) {
+    public EntriesResource(Initializer discoverer, ConfigurationProvider configuration) {
         this.discoverer = discoverer;
+        this.configuration = configuration;
     }
 
     @GET

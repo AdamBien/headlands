@@ -1,6 +1,6 @@
 package com.airhacks.headlands.cache.boundary;
 
-import com.airhacks.headlands.cache.control.ConfigurationExposer;
+import com.airhacks.headlands.cache.control.ConfigurationProvider;
 import com.airhacks.headlands.cache.control.Initializer;
 import com.airhacks.headlands.cache.entity.CacheConfiguration;
 import javax.validation.constraints.NotNull;
@@ -23,13 +23,13 @@ import javax.ws.rs.core.UriInfo;
 public class CacheResource {
 
     Initializer initializer;
-    ConfigurationExposer discoverer;
+    ConfigurationProvider configurationProvider;
 
     @Context
     ResourceContext rc;
 
-    public CacheResource(Initializer initializer, ConfigurationExposer cd) {
-        this.discoverer = cd;
+    public CacheResource(Initializer initializer, ConfigurationProvider cd) {
+        this.configurationProvider = cd;
         this.initializer = initializer;
     }
 
@@ -44,7 +44,7 @@ public class CacheResource {
 
     @OPTIONS
     public Response info(@PathParam("cacheName") String cacheName) {
-        CacheConfiguration configuration = this.discoverer.getConfiguration(cacheName);
+        CacheConfiguration configuration = this.configurationProvider.getConfiguration(cacheName);
         if (configuration == null) {
             return Response.noContent().build();
         }
@@ -53,7 +53,7 @@ public class CacheResource {
 
     @Path("entries")
     public EntriesResource entries(@PathParam("cacheName") @NotNull String cacheName) {
-        return rc.initResource(new EntriesResource(initializer));
+        return rc.initResource(new EntriesResource(initializer, configurationProvider));
     }
 
 }

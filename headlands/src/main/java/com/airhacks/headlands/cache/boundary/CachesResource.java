@@ -1,6 +1,6 @@
 package com.airhacks.headlands.cache.boundary;
 
-import com.airhacks.headlands.cache.control.ConfigurationExposer;
+import com.airhacks.headlands.cache.control.ConfigurationProvider;
 import com.airhacks.headlands.cache.control.Initializer;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -29,7 +29,7 @@ public class CachesResource {
     Initializer initializer;
 
     @Inject
-    ConfigurationExposer exposer;
+    ConfigurationProvider exposer;
 
     @Context
     ResourceContext rc;
