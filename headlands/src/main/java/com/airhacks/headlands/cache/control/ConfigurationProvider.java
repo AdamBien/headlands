@@ -50,6 +50,9 @@ public class ConfigurationProvider {
     }
 
     long convertToMs(Duration duration) {
+        if (duration == null) {
+            return 0;
+        }
         TimeUnit timeUnit = duration.getTimeUnit();
         return timeUnit.convert(duration.getDurationAmount(), TimeUnit.MILLISECONDS);
     }
