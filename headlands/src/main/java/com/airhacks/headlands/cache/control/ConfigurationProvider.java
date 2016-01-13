@@ -20,6 +20,9 @@ public class ConfigurationProvider {
 
     public CacheConfiguration getConfiguration(String cacheName) {
         CompleteConfiguration configuration = getCompleteConfiguration(cacheName);
+        if (configuration == null) {
+            return null;
+        }
         boolean storeByValue = configuration.isStoreByValue();
         boolean managementEnabled = configuration.isManagementEnabled();
         boolean readThrough = configuration.isReadThrough();
@@ -54,6 +57,9 @@ public class ConfigurationProvider {
             return 0;
         }
         TimeUnit timeUnit = duration.getTimeUnit();
+        if (timeUnit == null) {
+            return 0;
+        }
         return timeUnit.convert(duration.getDurationAmount(), TimeUnit.MILLISECONDS);
     }
 
