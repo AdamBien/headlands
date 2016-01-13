@@ -4,7 +4,7 @@
         "version": "0.0.4-SNAPSHOT",
         "title": "headlands"
     },
-    "host": "localhost:8080/headlands",
+    "host": "/headlands",
     "basePath": "/resources",
     "schemes": ["http"],
     "paths": {
