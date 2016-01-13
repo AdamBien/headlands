@@ -1,9 +1,13 @@
 package com.airhacks.headlands.cache.control;
 
 import com.airhacks.headlands.cache.entity.CacheConfiguration;
+import java.util.concurrent.TimeUnit;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.configuration.CompleteConfiguration;
+import javax.cache.configuration.Factory;
+import javax.cache.expiry.Duration;
+import javax.cache.expiry.ExpiryPolicy;
 import javax.inject.Inject;
 
 /**
@@ -22,7 +26,11 @@ public class ConfigurationExposer {
         boolean readThrough = configuration.isReadThrough();
         boolean writeThrough = configuration.isWriteThrough();
         boolean statisticsEnabled = configuration.isStatisticsEnabled();
-        return new CacheConfiguration(storeByValue, managementEnabled, statisticsEnabled, readThrough, writeThrough);
+        ExpiryPolicy expiryPolicy = getCacheEntryExpiration(configuration);
+        long expiryForAccess = convertToMs(expiryPolicy.getExpiryForAccess());
+        long expiryForCreation = convertToMs(expiryPolicy.getExpiryForCreation());
+        long expiryForUpdate = convertToMs(expiryPolicy.getExpiryForUpdate());
+        return new CacheConfiguration(expiryForAccess, expiryForCreation, expiryForUpdate, storeByValue, managementEnabled, statisticsEnabled, readThrough, writeThrough);
     }
 
     public CompleteConfiguration getCompleteConfiguration(String cacheName) {
@@ -35,6 +43,16 @@ public class ConfigurationExposer {
             return null;
         }
         return configuration;
+    }
+
+    ExpiryPolicy getCacheEntryExpiration(CompleteConfiguration configuration) {
+        Factory<ExpiryPolicy> expiryPolicyFactory = configuration.getExpiryPolicyFactory();
+        return expiryPolicyFactory.create();
+    }
+
+    long convertToMs(Duration duration) {
+        TimeUnit timeUnit = duration.getTimeUnit();
+        return timeUnit.convert(duration.getDurationAmount(), TimeUnit.MILLISECONDS);
     }
 
 }

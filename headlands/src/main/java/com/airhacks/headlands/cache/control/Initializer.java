@@ -4,12 +4,16 @@ import com.airhacks.headlands.cache.entity.CacheConfiguration;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
+import javax.cache.configuration.FactoryBuilder;
 import javax.cache.configuration.MutableConfiguration;
+import javax.cache.expiry.AccessedExpiryPolicy;
+import javax.cache.expiry.Duration;
 import javax.cache.spi.CachingProvider;
 import javax.ejb.ConcurrencyManagement;
 import javax.ejb.ConcurrencyManagementType;
@@ -82,10 +86,22 @@ public class Initializer {
             this.cacheManager.enableStatistics(cacheName, configuration.isStatisticsEnabled());
             return false;
         }
-        mutableConfiguration.setStoreByValue(configuration.isStoreByValue()).
+        mutableConfiguration = mutableConfiguration.
+                setStoreByValue(configuration.isStoreByValue()).
                 setTypes(String.class, String.class).
                 setManagementEnabled(configuration.isManagementEnabled()).
-                setStatisticsEnabled(configuration.isStatisticsEnabled());
+                setStatisticsEnabled(configuration.isStatisticsEnabled())
+                .setExpiryPolicyFactory(
+                        FactoryBuilder.factoryOf(
+                                new AccessedExpiryPolicy(
+                                        new Duration(
+                                                TimeUnit.MILLISECONDS, configuration.getExpiryForAccess()
+                                        )
+                                )
+                        )).
+                setReadThrough(configuration.isReadThrough()).
+                setWriteThrough(configuration.isWriteThrough());
+
         this.cacheManager.createCache(cacheName, mutableConfiguration);
         return true;
     }
