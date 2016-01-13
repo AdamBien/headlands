@@ -26,6 +26,8 @@ public class CachesResourceIT {
     @Rule
     public JAXRSClientProvider tut = JAXRSClientProvider.buildWithURI("http://localhost:8080/headlands/resources/caches");
 
+    static final String EXPIRY_FOR_ACCESS = "expiryForAccess";
+
     @Test
     public void crudCaches() {
         final WebTarget target = this.tut.target();
@@ -51,16 +53,36 @@ public class CachesResourceIT {
         JsonObject info = response.readEntity(JsonObject.class);
         System.out.println("info = " + info);
         assertNotNull(info);
+    }
 
-        JsonObject configuration = Json.createObjectBuilder().build();
-        response = target.path(cacheName).request().put(Entity.json(configuration));
+    @Test
+    public void validateExpiryForAccess() {
+        final WebTarget target = this.tut.target();
+        String cacheName = "cache-" + System.currentTimeMillis();
+        long expectedExpiration = 4242;
+
+        Response response = createCacheWithExpiration(target, expectedExpiration, cacheName);
+        assertThat(response.getStatus(), is(201));
+
+        response = target.path(cacheName).request(MediaType.APPLICATION_JSON).options();
         assertThat(response.getStatus(), is(200));
+
+        JsonObject configuration = response.readEntity(JsonObject.class);
+        assertNotNull(configuration);
+        long actualExpiration = configuration.getJsonNumber(EXPIRY_FOR_ACCESS).longValue();
+        assertThat(actualExpiration, is(expectedExpiration));
+
     }
 
     public static Response createCache(WebTarget target, String cacheName) {
         JsonObject configuration = Json.createObjectBuilder().build();
         return target.path(cacheName).request().put(Entity.json(configuration));
 
+    }
+
+    public static Response createCacheWithExpiration(WebTarget target, long expiryForAccess, String cacheName) {
+        JsonObject configuration = Json.createObjectBuilder().add(EXPIRY_FOR_ACCESS, expiryForAccess).build();
+        return target.path(cacheName).request().put(Entity.json(configuration));
     }
 
 }
