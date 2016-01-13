@@ -53,7 +53,14 @@ public class EntriesResource {
     public Response getValue(@PathParam("key") String key) {
         CacheControl cacheControl = getCacheControl();
         final String result = this.discoverer.get(cacheName, key);
-        return Response.ok(result).cacheControl(cacheControl).build();
+        if (result == null) {
+            return Response.noContent().
+                    cacheControl(cacheControl).
+                    build();
+        }
+        return Response.ok(result).
+                cacheControl(cacheControl).
+                build();
     }
 
     CacheControl getCacheControl() {
