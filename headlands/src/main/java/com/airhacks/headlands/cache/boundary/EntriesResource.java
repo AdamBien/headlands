@@ -2,6 +2,7 @@ package com.airhacks.headlands.cache.boundary;
 
 import com.airhacks.headlands.cache.control.ConfigurationProvider;
 import com.airhacks.headlands.cache.control.Initializer;
+import com.airhacks.headlands.cache.entity.CacheConfiguration;
 import java.util.Set;
 import javax.json.JsonObject;
 import javax.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
@@ -42,14 +44,25 @@ public class EntriesResource {
         StreamingOutput so = (o) -> {
             discoverer.dumpInto(cacheName, maxEntries, o);
         };
-        return Response.ok(so).build();
+        CacheControl cacheControl = getCacheControl();
+        return Response.ok(so).cacheControl(cacheControl).build();
     }
 
     @GET
     @Path("{key}")
-    public String getValue(@PathParam("key") String key) {
+    public Response getValue(@PathParam("key") String key) {
+        CacheControl cacheControl = getCacheControl();
+        final String result = this.discoverer.get(cacheName, key);
+        return Response.ok(result).cacheControl(cacheControl).build();
+    }
 
-        return this.discoverer.get(cacheName, key);
+    CacheControl getCacheControl() {
+        CacheConfiguration c = configuration.getConfiguration(cacheName);
+        int expiryForAccess = (int) c.getExpiryForAccessInSeconds();
+        CacheControl cacheControl = new CacheControl();
+        cacheControl.setMaxAge(expiryForAccess);
+        cacheControl.setPrivate(false);
+        return cacheControl;
     }
 
     @DELETE

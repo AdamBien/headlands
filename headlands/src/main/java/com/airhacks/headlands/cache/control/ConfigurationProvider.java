@@ -33,7 +33,7 @@ public class ConfigurationProvider {
         return new CacheConfiguration(expiryForAccess, expiryForCreation, expiryForUpdate, storeByValue, managementEnabled, statisticsEnabled, readThrough, writeThrough);
     }
 
-    public CompleteConfiguration getCompleteConfiguration(String cacheName) {
+    CompleteConfiguration getCompleteConfiguration(String cacheName) {
         Cache<String, String> cache = this.cacheManager.getCache(cacheName, String.class, String.class);
         if (cache == null) {
             return null;

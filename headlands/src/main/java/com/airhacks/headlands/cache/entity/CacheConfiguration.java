@@ -1,6 +1,7 @@
 package com.airhacks.headlands.cache.entity;
 
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -75,6 +76,11 @@ public class CacheConfiguration {
 
     public long getExpiryForUpdate() {
         return expiryForUpdate;
+    }
+
+    public long getExpiryForAccessInSeconds() {
+        return Duration.of(this.expiryForAccess, ChronoUnit.MILLIS).
+                getSeconds();
     }
 
 }
