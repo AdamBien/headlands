@@ -3,7 +3,6 @@ package com.airhacks.headlands.cache.control;
 import com.airhacks.headlands.cache.entity.CacheConfiguration;
 import java.util.concurrent.TimeUnit;
 import javax.cache.Cache;
-import javax.cache.CacheManager;
 import javax.cache.configuration.CompleteConfiguration;
 import javax.cache.configuration.Factory;
 import javax.cache.expiry.Duration;
@@ -17,7 +16,7 @@ import javax.inject.Inject;
 public class ConfigurationProvider {
 
     @Inject
-    CacheManager cacheManager;
+    Initializer initializer;
 
     public CacheConfiguration getConfiguration(String cacheName) {
         CompleteConfiguration configuration = getCompleteConfiguration(cacheName);
@@ -34,7 +33,7 @@ public class ConfigurationProvider {
     }
 
     CompleteConfiguration getCompleteConfiguration(String cacheName) {
-        Cache<String, String> cache = this.cacheManager.getCache(cacheName, String.class, String.class);
+        Cache<String, String> cache = this.initializer.getCache(cacheName);
         if (cache == null) {
             return null;
         }
