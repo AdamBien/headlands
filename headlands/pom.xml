@@ -35,9 +35,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast-all</artifactId>
-            <version>3.6</version>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-jcache</artifactId>
+            <version>8.2.0.Final</version>
         </dependency>
         <dependency>
             <groupId>javax.cache</groupId>
