@@ -43,7 +43,7 @@ public class ImportExportIT {
         Response response = target.path(input).path("entries").request(MediaType.APPLICATION_JSON).get();
         assertThat(response, successful());
         JsonObject dump = response.readEntity(JsonObject.class);
-        assertThat(dump.size(), is(CACHE_SIZE - 1));
+        assertThat(dump.size(), is(CACHE_SIZE));
         FileWriter writer = new FileWriter(dumpFile);
         try (JsonWriter jsonWriter = Json.createWriter(writer)) {
             jsonWriter.writeObject(dump);
