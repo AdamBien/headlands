@@ -7,7 +7,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.ConcurrencyManagement;
+import javax.ejb.ConcurrencyManagementType;
+import javax.ejb.Singleton;
 import javax.enterprise.event.Observes;
 import javax.json.JsonArray;
 import javax.websocket.EncodeException;
@@ -20,9 +22,10 @@ import javax.websocket.server.ServerEndpoint;
  *
  * @author airhacks.com
  */
-@ApplicationScoped
-@ServerEndpoint(value = "firehose", encoders = JsonArrayEncoder.class)
-public class WebSocketFireHose {
+@Singleton
+@ConcurrencyManagement(ConcurrencyManagementType.BEAN)
+@ServerEndpoint(value = "/firehose", encoders = JsonArrayEncoder.class)
+public class WebSocketFirehose {
 
     CopyOnWriteArrayList<Session> sessions;
 
@@ -43,14 +46,14 @@ public class WebSocketFireHose {
 
     public void onChange(@Observes CacheChangedEvent event) {
         JsonArray payload = event.getPayload();
-        sessions.forEach(s -> this.send(s, payload));
+        sessions.stream().filter(s -> s.isOpen()).forEach(s -> this.send(s, payload));
     }
 
     void send(Session session, JsonArray payload) {
         try {
             session.getBasicRemote().sendObject(payload);
         } catch (IOException | EncodeException ex) {
-            Logger.getLogger(WebSocketFireHose.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WebSocketFirehose.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -60,7 +63,7 @@ public class WebSocketFireHose {
             try {
                 s.close();
             } catch (IOException ex) {
-                Logger.getLogger(WebSocketFireHose.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(WebSocketFirehose.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }

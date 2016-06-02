@@ -20,7 +20,6 @@ public class JsonArrayEncoder implements Encoder.TextStream<JsonArray> {
         try (JsonWriter jsonWriter = Json.createWriter(writer)) {
             jsonWriter.writeArray(payload);
         }
-        writer.flush();
     }
 
     @Override

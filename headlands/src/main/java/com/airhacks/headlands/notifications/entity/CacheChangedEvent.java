@@ -6,6 +6,7 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 /**
  *
@@ -27,9 +28,12 @@ public class CacheChangedEvent {
         String key = event.getKey();
         String value = event.getValue();
         String oldValue = event.getOldValue();
-        JsonObject diff = Json.createObjectBuilder().add("newValue", value).
-                add("oldValue", oldValue).
-                build();
+        JsonObjectBuilder builder = Json.createObjectBuilder().add("newValue", value);
+        if (oldValue != null) {
+            builder.add("oldValue", oldValue);
+        }
+        JsonObject diff = builder.build();
+
         JsonObject changeSet = Json.createObjectBuilder().
                 add("cacheName", cacheName).
                 add("eventType", type.name()).
