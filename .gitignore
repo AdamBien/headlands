@@ -9,3 +9,4 @@ nb-configuration.xml
 release.sh
 /headlands/build.sh
 /headlands/nbproject/
+node_modules
