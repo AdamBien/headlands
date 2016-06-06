@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -19,11 +18,10 @@ import javax.cache.configuration.MutableConfiguration;
 import javax.cache.expiry.AccessedExpiryPolicy;
 import javax.cache.expiry.Duration;
 import javax.cache.spi.CachingProvider;
-import javax.ejb.ConcurrencyManagement;
-import javax.ejb.ConcurrencyManagementType;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Event;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.stream.JsonGenerator;
@@ -33,9 +31,7 @@ import javax.ws.rs.Produces;
  *
  * @author airhacks.com
  */
-@Startup
-@Singleton
-@ConcurrencyManagement(ConcurrencyManagementType.BEAN)
+@ApplicationScoped
 public class Initializer {
 
     CachingProvider cachingProvider;
@@ -44,8 +40,7 @@ public class Initializer {
     @Inject
     Event<CacheChangedEvent> event;
 
-    @PostConstruct
-    public void boot() {
+    public void boot(@Observes @Initialized(ApplicationScoped.class) Object doesntMatter) {
         System.setProperty("hazelcast.jcache.provider.type", "server");
         this.cachingProvider = Caching.getCachingProvider();
         this.cacheManager = cachingProvider.getCacheManager();
