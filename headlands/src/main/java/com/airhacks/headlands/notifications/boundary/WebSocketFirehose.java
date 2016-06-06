@@ -16,6 +16,7 @@ import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 /**
@@ -24,7 +25,7 @@ import javax.websocket.server.ServerEndpoint;
  */
 @Singleton
 @ConcurrencyManagement(ConcurrencyManagementType.BEAN)
-@ServerEndpoint(value = "/firehose", encoders = JsonArrayEncoder.class)
+@ServerEndpoint(value = "/firehose/{cache-name}", encoders = JsonArrayEncoder.class)
 public class WebSocketFirehose {
 
     CopyOnWriteArrayList<Session> sessions;
@@ -35,7 +36,8 @@ public class WebSocketFirehose {
     }
 
     @OnOpen
-    public void onConnect(Session session) {
+    public void onConnect(Session session, @PathParam("cache-name") String cacheName) {
+        System.out.println("uri: " + session.getRequestURI().toString());
         this.sessions.add(session);
     }
 
@@ -46,7 +48,11 @@ public class WebSocketFirehose {
 
     public void onChange(@Observes CacheChangedEvent event) {
         JsonArray payload = event.getPayload();
-        sessions.stream().filter(s -> s.isOpen()).forEach(s -> this.send(s, payload));
+        sessions.stream().
+                filter(s -> s.isOpen()).
+                filter(s -> s.getRequestURI().toString().endsWith("*")
+                || s.getRequestURI().toString().equalsIgnoreCase(event.getCacheName())).
+                forEach(s -> this.send(s, payload));
     }
 
     void send(Session session, JsonArray payload) {

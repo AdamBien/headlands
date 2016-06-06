@@ -44,7 +44,10 @@ public class CacheChangedEvent {
 
     public JsonArray getPayload() {
         return payload.build();
+    }
 
+    public String getCacheName() {
+        return cacheName;
     }
 
 }
