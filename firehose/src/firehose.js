@@ -1,4 +1,5 @@
 import React from 'react';
+import Connector from './connector';
 
 var FireHose = React.createClass({
 connect: function(){
@@ -21,7 +22,7 @@ render: function(){
   return(
     <div>
     <EventList events={this.state.events}/>
-    <input type="button" value="connect" onClick={this.connect}/>
+    <Connector/>
     </div>
     );
   }
