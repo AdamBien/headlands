@@ -48,8 +48,17 @@ public class WebSocketsFirehoseIT {
     }
 
     @Test
-    public void creationEventsAreDeliveredWithWildcardChannel() throws DeploymentException, IOException, URISyntaxException {
-        containerProvider.connectToServer(this.messagesEndpoint, new URI("ws://localhost:8080/headlands/firehose/*"));
+    public void creationEventsAreDeliveredViaWildCardChannel() throws DeploymentException, IOException, URISyntaxException {
+        this.creationEventsAreDeliveredVia("*");
+    }
+
+    @Test
+    public void creationEventsAreDeliveredViaDedicatedChannel() throws DeploymentException, IOException, URISyntaxException {
+        this.creationEventsAreDeliveredVia(this.cacheName);
+    }
+
+    void creationEventsAreDeliveredVia(String channel) throws DeploymentException, IOException, URISyntaxException {
+        containerProvider.connectToServer(this.messagesEndpoint, new URI("ws://localhost:8080/headlands/firehose/" + channel));
         String expectedValue = "java rocks " + System.currentTimeMillis();
         String expectedKey = "status" + System.currentTimeMillis();
         Response response = createEntry(this.tut.target(), this.cacheName, expectedKey, expectedValue);
@@ -72,6 +81,6 @@ public class WebSocketsFirehoseIT {
         JsonObject changeSet = event.getJsonObject(actualKey);
         String actualValue = changeSet.getString("newValue");
         assertThat(actualValue, is(expectedValue));
-
     }
+
 }
