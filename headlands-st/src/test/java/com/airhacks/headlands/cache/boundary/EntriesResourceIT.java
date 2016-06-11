@@ -39,7 +39,7 @@ public class EntriesResourceIT {
     public void crudEntries() {
         String expectedValue = "java rocks " + System.currentTimeMillis();
         String expectedKey = "status" + System.currentTimeMillis();
-        Response response = createEntry(this.tut.target(), this.cacheName, expectedKey, expectedValue);
+        Response response = createEntryOrUpdate(this.tut.target(), this.cacheName, expectedKey, expectedValue);
         assertThat(response, successful());
 
         JsonObject cacheContent = this.tut.target().path(cacheName).path("entries").request().get(JsonObject.class);
@@ -57,7 +57,7 @@ public class EntriesResourceIT {
     public void cacheControl() {
         String expectedValue = "expiry " + System.currentTimeMillis();
         String expectedKey = "cacheControl " + System.currentTimeMillis();
-        createEntry(this.tut.target(), this.cacheName, expectedKey, expectedValue);
+        createEntryOrUpdate(this.tut.target(), this.cacheName, expectedKey, expectedValue);
 
         Response response = this.tut.target().path(cacheName).path("entries").path(expectedKey).request().get();
         String cacheControl = response.getHeaderString("Cache-Control");
@@ -66,7 +66,7 @@ public class EntriesResourceIT {
 
     }
 
-    public static Response createEntry(WebTarget caches, String cache, String key, String value) {
+    public static Response createEntryOrUpdate(WebTarget caches, String cache, String key, String value) {
         return caches.path(cache).path("entries").path(key).request().put(Entity.text(value));
     }
 

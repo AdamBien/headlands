@@ -37,7 +37,7 @@ public class ImportExportIT {
         CachesResourceIT.createCache(target, input);
         CachesResourceIT.createCache(target, output);
         for (int i = 0; i < CACHE_SIZE; i++) {
-            EntriesResourceIT.createEntry(target, input, "key" + i, "value" + i);
+            EntriesResourceIT.createEntryOrUpdate(target, input, "key" + i, "value" + i);
         }
 
         Response response = target.path(input).path("entries").request(MediaType.APPLICATION_JSON).get();

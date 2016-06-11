@@ -43,7 +43,7 @@ public class CacheProcessorsResourceIT {
 
         Response response = CachesResourceIT.createCache(target, cacheName);
         assertThat(response, successful());
-        response = EntriesResourceIT.createEntry(target, cacheName, key, value);
+        response = EntriesResourceIT.createEntryOrUpdate(target, cacheName, key, value);
         assertThat(response, successful());
 
         String script = loadScript("copycache.js");
