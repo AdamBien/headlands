@@ -23,7 +23,7 @@ limitations under the License.
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.airhacks</groupId>
     <artifactId>headlands-ui</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>headlands-ui</name>
     <url>http://airhacks.com</url>
