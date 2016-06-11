@@ -168,7 +168,7 @@ public class Initializer {
     void registerListener(Cache<String, String> cache) {
         CacheEntryChangedListener listener = new CacheEntryChangedListener(cache.getName(), event::fire);
         Factory<CacheEntryChangedListener> listenerFactory = FactoryBuilder.factoryOf(listener);
-        MutableCacheEntryListenerConfiguration configuration = new MutableCacheEntryListenerConfiguration(listenerFactory, null, false, true);
+        MutableCacheEntryListenerConfiguration configuration = new MutableCacheEntryListenerConfiguration(listenerFactory, null, true, true);
         cache.registerCacheEntryListener(configuration);
     }
 
