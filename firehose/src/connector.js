@@ -10,9 +10,11 @@ export default class Connector extends React.Component{
     this.onChange = this.onChange.bind(this);
     this.click = this.click.bind(this);
   }
+  
 
   click(){
     console.log(`thank you for clicking ${this.state.uri}`);
+    this.props.listener(this.state.uri);
   }
 
   onChange(event){

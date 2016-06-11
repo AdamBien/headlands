@@ -1,10 +1,14 @@
 export default class Dispatcher{
 
   var views = [];
-  var promises = [];
 
   register(view){
     views.push(view);
   }
 
+  notifyAll(payload){
+    for(view of views){
+      view.onPayload(payload);
+    }
+  }
 }

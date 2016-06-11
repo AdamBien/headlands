@@ -1,35 +1,33 @@
 import React from 'react';
-import Connector from './connector';
+import Connector from './Connector';
+import EventReceiver from './EventReceiver';
 
-var FireHose = React.createClass({
-connect: function(){
-  var socket = new WebSocket("ws://localhost:8080/headlands/firehose/*");
-  socket.onopen = function (event) {
-  console.log("connection opened", event);
-};
-socket.onmessage =  (event) => {
-  this.setState({events: this.state.events.concat(event)});
-  console.log(this.state.events);
-};
+export default class FireHose extends React.Component{
 
-},
-getInitialState: function() {
-  return {
-    events: []
-  };
-},
-render: function(){
+constructor() {
+  super();
+  this.receiver = new EventReceiver();
+  this.state =  {events: []};
+  this.onNewEvent = this.onNewEvent.bind(this);
+  this.receiver.setCallback(this.onNewEvent);
+}
+
+onNewEvent(event){
+  this.setState({events:this.state.events.concat(event)});
+}
+
+render(){
   return(
     <div>
-    <EventList events={this.state.events}/>
-    <Connector/>
+      <EventList events={this.state.events}/>
+      <Connector listener={this.receiver.setUri}/>
     </div>
     );
   }
-  });
+}
 
-var EventList = React.createClass({
-  render: function() {
+class EventList extends React.Component{
+  render(){
     return (
       <div>
       <ul>
@@ -40,8 +38,6 @@ var EventList = React.createClass({
         }
     </ul>
   </div>
-);
+  );
+  }
 }
-});
-
-export default FireHose
