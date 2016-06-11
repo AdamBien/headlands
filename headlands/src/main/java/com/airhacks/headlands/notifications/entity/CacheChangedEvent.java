@@ -37,6 +37,7 @@ public class CacheChangedEvent {
         JsonObject changeSet = Json.createObjectBuilder().
                 add("cacheName", cacheName).
                 add("eventType", type.name()).
+                add("key", key).
                 add(key, diff).
                 build();
         payload.add(changeSet);
