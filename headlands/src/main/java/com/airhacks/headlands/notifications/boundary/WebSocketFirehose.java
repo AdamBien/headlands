@@ -51,7 +51,7 @@ public class WebSocketFirehose {
         sessions.stream().
                 filter(s -> s.isOpen()).
                 filter(s -> s.getRequestURI().toString().endsWith("*")
-                || s.getRequestURI().toString().equalsIgnoreCase(event.getCacheName())).
+                || s.getRequestURI().toString().endsWith(event.getCacheName())).
                 forEach(s -> this.send(s, payload));
     }
 
