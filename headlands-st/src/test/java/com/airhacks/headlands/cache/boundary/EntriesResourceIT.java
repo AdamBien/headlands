@@ -70,6 +70,10 @@ public class EntriesResourceIT {
         return caches.path(cache).path("entries").path(key).request().put(Entity.text(value));
     }
 
+    public static Response removeEntry(WebTarget caches, String cache, String key) {
+        return caches.path(cache).path("entries").path(key).request().delete();
+    }
+
     @Test
     public void bulkSave() {
         String expectedValue = "java rocks " + System.currentTimeMillis();
@@ -86,7 +90,7 @@ public class EntriesResourceIT {
         String actualValue = this.tut.target().path(cacheName).path("entries").path(expectedKey).request().get(String.class);
         assertThat(actualValue, is(expectedValue));
 
-        Response deletion = this.tut.target().path(cacheName).path("entries").path(expectedKey).request().delete();
+        Response deletion = removeEntry(this.tut.target(), cacheName, expectedKey);
         assertThat(deletion.getStatus(), is(200));
     }
 

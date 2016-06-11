@@ -1,6 +1,7 @@
 package com.airhacks.headlands.notifications.boundary;
 
 import com.airhacks.headlands.cache.boundary.CachesResourceIT;
+import com.airhacks.headlands.cache.boundary.EntriesResourceIT;
 import static com.airhacks.headlands.cache.boundary.EntriesResourceIT.createEntry;
 import static com.airhacks.rulz.jaxrsclient.HttpMatchers.successful;
 import com.airhacks.rulz.jaxrsclient.JAXRSClientProvider;
@@ -81,6 +82,46 @@ public class WebSocketsFirehoseIT {
         JsonObject changeSet = event.getJsonObject(actualKey);
         String actualValue = changeSet.getString("newValue");
         assertThat(actualValue, is(expectedValue));
+    }
+
+    void removalEventsAreDeliveredVia(String channel) throws DeploymentException, IOException, URISyntaxException {
+        String expectedValue = "java rocks " + System.currentTimeMillis();
+        String expectedKey = "status" + System.currentTimeMillis();
+        Response response = createEntry(this.tut.target(), this.cacheName, expectedKey, expectedValue);
+        assertThat(response, successful());
+        containerProvider.connectToServer(this.messagesEndpoint, new URI("ws://localhost:8080/headlands/firehose/" + channel));
+        EntriesResourceIT.removeEntry(this.tut.target(), this.cacheName, expectedKey);
+        String message = this.messagesEndpoint.getMessage();
+        assertNotNull(message);
+        JsonReader reader = Json.createReader(new StringReader(message));
+        JsonArray eventsArray = reader.readArray();
+        assertThat(eventsArray.size(), is(1));
+        JsonObject event = eventsArray.getJsonObject(0);
+
+        System.out.println("event = " + event);
+
+        String actualCacheName = event.getString("cacheName");
+        assertThat(actualCacheName, is(this.cacheName));
+
+        String eventType = event.getString("eventType");
+        assertThat(eventType, is("REMOVED"));
+
+        String actualKey = event.getString("key");
+        assertThat(actualKey, is(expectedKey));
+
+        JsonObject changeSet = event.getJsonObject(actualKey);
+        String actualValue = changeSet.getString("newValue");
+        assertThat(actualValue, is(expectedValue));
+    }
+
+    @Test
+    public void removalEventsAreDeliveredViaWildcard() throws DeploymentException, IOException, URISyntaxException {
+        this.removalEventsAreDeliveredVia("*");
+    }
+
+    @Test
+    public void removalEventsAreDeliveredViaDedicatedTopic() throws DeploymentException, IOException, URISyntaxException {
+        this.removalEventsAreDeliveredVia(this.cacheName);
     }
 
 }
