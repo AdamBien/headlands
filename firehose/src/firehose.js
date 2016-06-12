@@ -13,14 +13,16 @@ constructor() {
 }
 
 onNewEvent(event){
+  console.log(event);
   this.setState({events:this.state.events.concat(event)});
 }
+
 
 render(){
   return(
     <div>
-      <EventList events={this.state.events}/>
       <Connector listener={this.receiver.setUri}/>
+      <EventList events={this.state.events}/>
     </div>
     );
   }
@@ -33,7 +35,7 @@ class EventList extends React.Component{
       <ul>
         {
           this.props.events.map(function(event){
-            return <li>{event.data}</li>;
+            return <li key={event.id}>{event.cacheName} {event.key} {event.value}</li>;
           })
         }
     </ul>

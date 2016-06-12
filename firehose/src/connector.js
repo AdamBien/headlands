@@ -10,7 +10,7 @@ export default class Connector extends React.Component{
     this.onChange = this.onChange.bind(this);
     this.click = this.click.bind(this);
   }
-  
+
 
   click(){
     console.log(`thank you for clicking ${this.state.uri}`);
@@ -27,7 +27,7 @@ export default class Connector extends React.Component{
     return(
         <div>
           <input type="text" defaultValue={this.state.uri} onChange={this.onChange}/>
-          <button onClick={this.click}>connect</button>
+          <button onClick={this.click} className="success button">connect</button>
         </div>
       );
   }
