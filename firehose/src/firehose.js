@@ -31,15 +31,20 @@ render(){
 class EventList extends React.Component{
   render(){
     return (
-      <div>
-      <ul>
+      <table>
+        <thead>
+        <tr>
+            <th>Cache Name</th><th>Key</th><th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
         {
           this.props.events.map(function(event){
-            return <li key={event.id}>{event.cacheName} {event.key} {event.value}</li>;
+            return <tr key={event.id}><td>{event.cacheName}</td><td>{event.key}</td><td>{event.value}</td></tr>;
           })
         }
-    </ul>
-  </div>
+        </tbody>
+  </table>
   );
   }
 }
