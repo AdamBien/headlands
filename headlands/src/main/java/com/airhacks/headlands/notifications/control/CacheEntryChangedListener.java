@@ -19,7 +19,7 @@ public class CacheEntryChangedListener implements CacheEntryCreatedListener<Stri
         CacheEntryRemovedListener<String, String>,
         Serializable {
 
-    private final Consumer<CacheChangedEvent> sink;
+    private final transient Consumer<CacheChangedEvent> sink;
     private final String cacheName;
 
     public CacheEntryChangedListener(String cacheName, Consumer<CacheChangedEvent> sink) {
