@@ -84,3 +84,20 @@ Output:
 {"chief":"The answer: duke"}
 ```
 
+### Receiving WebSocket notifications
+
+Cache-change events are delivered via the following URI
+
+```
+ws://localhost:8080/headlands/firehose/{cache-name}
+```
+
+The change events are delivered in the following JSON-format:
+
+```json
+{"cacheName":"cache-1465959736089","eventType":"UPDATED","key":"status1465959736241","status1465959736241":
+	{"newValue":"java rocks 1465959736241-UPDATED",
+	 "oldValue":"java rocks 1465959736241"
+	 }
+}
+```
